@@ -326,7 +326,19 @@ A **dynamic element** is one whose attributes **change every time the page loads
 ```xpath
 //input[contains(@id,'user_')]
 ```
-
+or 
+html
+```
+<h2>Accessing Attributes</h2>
+```
+//*[contains(. ,'Accessing')]
+or 
+//h2[contains(. ,'Accessing')]
+or 
+//*[contains(text(),'Accessing')]
+```
+//h1[contains(@class,"heading-")]
+```
 ### Selenium
 
 ```java
