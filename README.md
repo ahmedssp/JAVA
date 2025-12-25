@@ -121,7 +121,7 @@ public class Test {
     }
 }
 ```
-99
+>>>
 👉 Your turn:
 What will be printed on the output?
 
