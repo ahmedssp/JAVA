@@ -7,6 +7,7 @@ Let’s practice reading Java code and predicting the output, which is very comm
 I’ll give you small Java functions, and you try to tell me what the output will be. After you answer, I’ll explain it clearly.
 
 Practice 1: Basics
+```
 public class Test {
     static int add(int a, int b) {
         return a + b;
@@ -16,10 +17,12 @@ public class Test {
         System.out.println(add(2, 3)); //5
     }
 }
+```
 👉 Question:
 What will be printed?
 
 Practice 2: Method Overloading
+```
 public class Test {
     static int sum(int a, int b) {
         return a + b;
@@ -30,14 +33,16 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        System.out.println(sum(1, 2));
-        System.out.println(sum(1, 2, 3));
+        System.out.println(sum(1, 2)); //3
+        System.out.println(sum(1, 2, 3)); 6
     }
 }
+```
 👉 Question:
 What is the output?
 
 Practice 3: Pass by Value
+```
 public class Test {
     static void change(int x) {
         x = 10;
@@ -45,14 +50,37 @@ public class Test {
 
     public static void main(String[] args) {
         int a = 5;
-        change(a);
+        change(a);   //x=10 , a=5
         System.out.println(a);
     }
 }
+```
+✅ Output
+5
+
+🧠 Why?
+
+Java is pass-by-value
+
+a is 5
+
+When change(a) is called, a copy of a is passed to x
+
+Inside change(), x = 10 changes only the local copy
+
+a in main() remains unchanged
+
+So System.out.println(a); prints 5
+
+💡 Interview line to remember:
+
+“Primitive values in Java are passed by value, so changes inside a method do not affect the original variable.”
+
 👉 Question:
 What will be printed and why?
 
 Practice 4: Return + Condition
+```
 public class Test {
     static int check(int x) {
         if (x > 5) {
@@ -62,25 +90,15 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        System.out.println(check(4));
-        System.out.println(check(6));
+        System.out.println(check(4));  //6
+        System.out.println(check(6));   //12
     }
 }
+```
 👉 Question:
 What is the output?
 
-How we can continue 🚀
-We can practice:
 
-Loops (for, while)
-
-static vs non-static
-
-String vs StringBuilder
-
-Arrays
-
-Tricky interview questions
 
 👉 Start by answering Practice 1, and I’ll guide you step by step like a real interview.
 
@@ -92,7 +110,7 @@ Let’s start step by step, just like in a real interview.
 
 ✅ Practice 1
 Look at this code carefully:
-
+```
 public class Test {
     static int add(int a, int b) {
         return a + b;
@@ -102,6 +120,8 @@ public class Test {
         System.out.println(add(2, 3));
     }
 }
+```
+99
 👉 Your turn:
 What will be printed on the output?
 
