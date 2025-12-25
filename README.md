@@ -1,6 +1,4 @@
-Skip to content
-You said:
-i have interview , for java 
+
 i want to practs my self how to read and give output of smal functions in java 
 ChatGPT said:
 That’s a great way to prepare 👍
@@ -15,7 +13,7 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        System.out.println(add(2, 3));
+        System.out.println(add(2, 3)); //5
     }
 }
 👉 Question:
