@@ -331,11 +331,15 @@ html
 ```
 <h2>Accessing Attributes</h2>
 ```
-//*[contains(. ,'Accessing')]
+
+```//*[contains(. ,'Accessing')]```
+
 or 
-//h2[contains(. ,'Accessing')]
+
+```//h2[contains(. ,'Accessing')]```
 or 
-//*[contains(text(),'Accessing')]
+
+```//*[contains(text(),'Accessing')]```
 ```
 //h1[contains(@class,"heading-")]
 ```
