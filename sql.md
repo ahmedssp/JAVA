@@ -1,1099 +1,1376 @@
 SQL Interview & Practice Guide: Data Integrity (PK & FK)
-Basic Concepts
+Absolutely! Below is a comprehensive **SQL Interview & Practice Guide** with **50 questions and answers** focused on **verifying data integrity using Primary Key (PK) and Foreign Key (FK) constraints**. I’ve structured it for both practical and conceptual understanding.
 
-Q: What is a primary key in SQL?
-A: A primary key is a column (or combination of columns) that uniquely identifies each row in a table. It cannot contain NULLs and must be unique.
+---
 
-Q: What is a foreign key in SQL?
-A: A foreign key is a column (or combination of columns) in one table that refers to the primary key in another table, enforcing referential integrity.
+## **SQL Interview & Practice Guide: Data Integrity (PK & FK)**
+---
 
-Q: Can a primary key contain NULL values?
-A: No, a primary key column cannot contain NULL values.
+✅ These 50 Q&A cover **conceptual understanding, syntax, verification methods, testing, and scenarios** to prepare for SQL interviews and practical exercises on **data integrity via PK/FK constraints**.
 
-Q: Can a foreign key contain NULL values?
-A: Yes, unless the column is explicitly defined as NOT NULL.
+---
+### **Basic Concepts**
 
-Q: What is referential integrity?
-A: Referential integrity ensures that a foreign key value always points to an existing row in the parent table.
+1. **Q:** What is a primary key in SQL?
+   **A:** A primary key is a column (or combination of columns) that uniquely identifies each row in a table. It cannot contain NULLs and must be unique.
 
-Q: What happens if you try to insert a duplicate value into a primary key column?
-A: SQL will reject the insertion and throw a primary key violation error.
+2. **Q:** What is a foreign key in SQL?
+   **A:** A foreign key is a column (or combination of columns) in one table that refers to the primary key in another table, enforcing referential integrity.
+Absolutely! Here's a simple example of two tables demonstrating **Primary Key (PK) and Foreign Key (FK)**, including some sample data.
 
-Q: What happens if you try to insert a value into a foreign key column that does not exist in the parent table?
-A: SQL will reject the insertion and throw a foreign key violation error.
+---
 
-Q: Can a table have more than one primary key?
-A: No, but it can have a composite primary key (multiple columns together).
+### **Table 1: Departments (Parent Table)**
 
-Q: Can a table have more than one foreign key?
-A: Yes, a table can have multiple foreign keys referencing one or more parent tables.
+| DepartmentID (PK) | DepartmentName |
+| ----------------- | -------------- |
+| 1                 | HR             |
+| 2                 | IT             |
+| 3                 | Sales          |
 
-Q: Why are primary keys important for data integrity?
-A: They uniquely identify rows, prevent duplicates, and enforce entity integrity.
+* **Primary Key:** `DepartmentID`
+* Each department has a unique `DepartmentID`.
 
-SQL Syntax & Verification
+---
 
-Q: How do you define a primary key when creating a table?
-A:
+### **Table 2: Employees (Child Table)**
 
-CREATE TABLE Employees (
-    EmployeeID INT PRIMARY KEY,
-    Name VARCHAR(50)
-);
+| EmployeeID (PK) | FirstName | LastName | DepartmentID (FK) |
+| --------------- | --------- | -------- | ----------------- |
+| 101             | Ahmed     | Ali      | 1                 |
+| 102             | Sara      | Omar     | 2                 |
+| 103             | John      | Smith    | 2                 |
+| 104             | Mona      | Youssef  | 3                 |
 
+* **Primary Key:** `EmployeeID` (unique for each employee)
+* **Foreign Key:** `DepartmentID` references `Departments.DepartmentID`
+* This ensures that each employee is assigned to a **valid department**.
 
-Q: How do you define a foreign key when creating a table?
-A:
 
-CREATE TABLE Orders (
-    OrderID INT PRIMARY KEY,
-    EmployeeID INT,
-    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
-);
+3. **Q:** Can a primary key contain NULL values?
+   **A:** No, a primary key column cannot contain NULL values.
 
+4. **Q:** Can a foreign key contain NULL values?
+   **A:** Yes, unless the column is explicitly defined as NOT NULL.
 
-Q: How do you add a primary key to an existing table?
-A:
+5. **Q:** What is referential integrity?
+   **A:** Referential integrity ensures that a foreign key value always points to an existing row in the parent table.
 
-ALTER TABLE Employees
-ADD CONSTRAINT PK_EmployeeID PRIMARY KEY (EmployeeID);
+6. **Q:** What happens if you try to insert a duplicate value into a primary key column?
+   **A:** SQL will reject the insertion and throw a primary key violation error.
 
+7. **Q:** What happens if you try to insert a value into a foreign key column that does not exist in the parent table?
+   **A:** SQL will reject the insertion and throw a foreign key violation error.
 
-Q: How do you add a foreign key to an existing table?
-A:
+8. **Q:** Can a table have more than one primary key?
+   **A:** No, but it can have a **composite primary key** (multiple columns together).
 
-ALTER TABLE Orders
-ADD CONSTRAINT FK_EmployeeID FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID);
+9. **Q:** Can a table have more than one foreign key?
+   **A:** Yes, a table can have multiple foreign keys referencing one or more parent tables.
 
+10. **Q:** Why are primary keys important for data integrity?
+    **A:** They uniquely identify rows, prevent duplicates, and enforce entity integrity.
 
-Q: How do you drop a primary key from a table?
-A:
+---
 
-ALTER TABLE Employees
-DROP CONSTRAINT PK_EmployeeID;
+### **SQL Syntax & Verification**
 
+11. **Q:** How do you define a primary key when creating a table?
+    **A:**
 
-Q: How do you drop a foreign key from a table?
-A:
+    ```sql
+    CREATE TABLE Employees (
+        EmployeeID INT PRIMARY KEY,
+        Name VARCHAR(50)
+    );
+    ```
 
-ALTER TABLE Orders
-DROP CONSTRAINT FK_EmployeeID;
+12. **Q:** How do you define a foreign key when creating a table?
+    **A:**
 
+    ```sql
+    CREATE TABLE Orders (
+        OrderID INT PRIMARY KEY,
+        EmployeeID INT,
+        FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+    );
+    ```
 
-Q: How do you verify primary key constraints on a table?
-A: Query the system catalog:
+13. **Q:** How do you add a primary key to an existing table?
+    **A:**
 
--- For SQL Server
-SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
-WHERE CONSTRAINT_TYPE = 'PRIMARY KEY' AND TABLE_NAME = 'Employees';
+    ```sql
+    ALTER TABLE Employees
+    ADD CONSTRAINT PK_EmployeeID PRIMARY KEY (EmployeeID);
+    ```
+Sure! Let me explain your SQL statement step by step.
 
+---
 
-Q: How do you verify foreign key constraints on a table?
-A:
 
--- For SQL Server
-SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
-WHERE CONSTRAINT_NAME = 'FK_EmployeeID';
+**Description:**
 
+1. **`ALTER TABLE Employees`**
 
-Q: How can you check which columns are part of a primary key?
-A:
+   * This command **modifies the structure** of an existing table named `Employees`.
+   * You use `ALTER TABLE` to add, modify, or delete columns or constraints.
 
-SELECT COLUMN_NAME
-FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-WHERE OBJECTPROPERTY(OBJECT_ID(CONSTRAINT_NAME), 'IsPrimaryKey') = 1;
+2. **`ADD CONSTRAINT PK_EmployeeID`**
 
+   * `ADD CONSTRAINT` tells SQL that you want to **add a new rule/constraint** to the table.
+   * `PK_EmployeeID` is the **name of the constraint** (you can choose any valid name).
+   * Naming a constraint is helpful for **reference in error messages or if you need to drop it later**.
 
-Q: How can you check which columns are part of a foreign key?
-A:
+3. **`PRIMARY KEY (EmployeeID)`**
 
-SELECT COLUMN_NAME
-FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-WHERE OBJECTPROPERTY(OBJECT_ID(CONSTRAINT_NAME), 'IsForeignKey') = 1;
+   * This defines the **Primary Key** on the column `EmployeeID`.
+   * It ensures that:
 
-Data Integrity Testing Questions
+     * `EmployeeID` values are **unique** across the table.
+     * `EmployeeID` **cannot be NULL**.
 
-Q: How do you test if the primary key constraint is enforced?
-A: Try inserting duplicate values into the primary key column; it should fail.
+---
 
-Q: How do you test if the foreign key constraint is enforced?
-A: Try inserting a value in the foreign key column that does not exist in the parent table; it should fail.
+14. **Q:** How do you add a foreign key to an existing table?
+    **A:**
 
-Q: How do you test cascading deletes?
-A: Create a foreign key with ON DELETE CASCADE and delete a row in the parent table. Rows in the child table should be deleted automatically.
+    ```sql
+    ALTER TABLE Orders
+    ADD CONSTRAINT FK_EmployeeID FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID);
+    ```
 
-Q: How do you test cascading updates?
-A: Create a foreign key with ON UPDATE CASCADE and update the primary key in the parent table. The child table should reflect the change.
+15. **Q:** How do you drop a primary key from a table?
+    **A:**
 
-Q: How do you find orphan records violating foreign key relationships?
-A:
+    ```sql
+    ALTER TABLE Employees
+    DROP CONSTRAINT PK_EmployeeID;
+    ```
 
-SELECT * FROM Orders o
-LEFT JOIN Employees e ON o.EmployeeID = e.EmployeeID
-WHERE e.EmployeeID IS NULL;
+16. **Q:** How do you drop a foreign key from a table?
+    **A:**
 
+    ```sql
+    ALTER TABLE Orders
+    DROP CONSTRAINT FK_EmployeeID;
+    ```
 
-Q: How do you check for duplicate values in a primary key column?
-A:
+17. **Q:** How do you verify primary key constraints on a table?
+    **A:** Query the system catalog:
 
-SELECT EmployeeID, COUNT(*) 
-FROM Employees
-GROUP BY EmployeeID
-HAVING COUNT(*) > 1;
+    ```sql
+    -- For SQL Server
+    SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+    WHERE CONSTRAINT_TYPE = 'PRIMARY KEY' AND TABLE_NAME = 'Employees';
+    ```
 
+18. **Q:** How do you verify foreign key constraints on a table?
+    **A:**
 
-Q: How do you check for invalid foreign key references?
-A:
+    ```sql
+    -- For SQL Server
+    SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
+    WHERE CONSTRAINT_NAME = 'FK_EmployeeID';
+    ```
 
-SELECT * FROM Orders o
-WHERE NOT EXISTS (
-    SELECT 1 FROM Employees e
-    WHERE e.EmployeeID = o.EmployeeID
-);
+19. **Q:** How can you check which columns are part of a primary key?
+    **A:**
 
+    ```sql
+    SELECT COLUMN_NAME
+    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+    WHERE OBJECTPROPERTY(OBJECT_ID(CONSTRAINT_NAME), 'IsPrimaryKey') = 1;
+    ```
 
-Q: How can you enforce NOT NULL constraint for foreign keys?
-A: Define the column as NOT NULL when creating the table:
+20. **Q:** How can you check which columns are part of a foreign key?
+    **A:**
 
-EmployeeID INT NOT NULL REFERENCES Employees(EmployeeID)
+    ```sql
+    SELECT COLUMN_NAME
+    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+    WHERE OBJECTPROPERTY(OBJECT_ID(CONSTRAINT_NAME), 'IsForeignKey') = 1;
+    ```
 
+---
 
-Q: Can a table have a foreign key pointing to itself?
-A: Yes, it’s called a self-referencing foreign key (useful for hierarchical data).
+### **Data Integrity Testing Questions**
 
-Q: How do you verify a self-referencing foreign key?
-A: Use:
+21. **Q:** How do you test if the primary key constraint is enforced?
+    **A:** Try inserting duplicate values into the primary key column; it should fail.
 
-SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
-WHERE UNIQUE_CONSTRAINT_NAME = 'PK_EmployeeID';
+22. **Q:** How do you test if the foreign key constraint is enforced?
+    **A:** Try inserting a value in the foreign key column that does not exist in the parent table; it should fail.
 
-Advanced Verification Questions
+23. **Q:** How do you test cascading deletes?
+    **A:** Create a foreign key with `ON DELETE CASCADE` and delete a row in the parent table. Rows in the child table should be deleted automatically.
 
-Q: How do you check if all foreign key constraints in the database are valid?
-A:
+24. **Q:** How do you test cascading updates?
+    **A:** Create a foreign key with `ON UPDATE CASCADE` and update the primary key in the parent table. The child table should reflect the change.
 
-SELECT OBJECT_NAME(f.parent_object_id) AS ChildTable,
-       COL_NAME(fc.parent_object_id,fc.parent_column_id) AS FKColumn,
-       OBJECT_NAME(f.referenced_object_id) AS ParentTable
-FROM sys.foreign_keys AS f
-INNER JOIN sys.foreign_key_columns AS fc
-ON f.object_id = fc.constraint_object_id;
+25. **Q:** How do you find orphan records violating foreign key relationships?
+    **A:**
 
+    ```sql
+    SELECT * FROM Orders o
+    LEFT JOIN Employees e ON o.EmployeeID = e.EmployeeID
+    WHERE e.EmployeeID IS NULL;
+    ```
 
-Q: How do you verify primary key constraints in MySQL?
-A:
+26. **Q:** How do you check for duplicate values in a primary key column?
+    **A:**
 
-SHOW KEYS FROM Employees WHERE Key_name = 'PRIMARY';
+    ```sql
+    SELECT EmployeeID, COUNT(*) 
+    FROM Employees
+    GROUP BY EmployeeID
+    HAVING COUNT(*) > 1;
+    ```
 
+27. **Q:** How do you check for invalid foreign key references?
+    **A:**
 
-Q: How do you verify foreign key constraints in MySQL?
-A:
+    ```sql
+    SELECT * FROM Orders o
+    WHERE NOT EXISTS (
+        SELECT 1 FROM Employees e
+        WHERE e.EmployeeID = o.EmployeeID
+    );
+    ```
 
-SELECT * 
-FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
-WHERE TABLE_NAME = 'Orders' AND REFERENCED_TABLE_NAME IS NOT NULL;
+28. **Q:** How can you enforce NOT NULL constraint for foreign keys?
+    **A:** Define the column as `NOT NULL` when creating the table:
 
+    ```sql
+    EmployeeID INT NOT NULL REFERENCES Employees(EmployeeID)
+    ```
 
-Q: How do you enforce unique values on a column without using a primary key?
-A: Use a UNIQUE constraint:
+29. **Q:** Can a table have a foreign key pointing to itself?
+    **A:** Yes, it’s called a self-referencing foreign key (useful for hierarchical data).
 
-ALTER TABLE Employees ADD CONSTRAINT UQ_Email UNIQUE (Email);
+30. **Q:** How do you verify a self-referencing foreign key?
+    **A:** Use:
 
+    ```sql
+    SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
+    WHERE UNIQUE_CONSTRAINT_NAME = 'PK_EmployeeID';
+    ```
 
-Q: How do you enforce multiple-column primary keys?
-A:
+---
 
-CREATE TABLE EmployeeProjects (
-    EmployeeID INT,
-    ProjectID INT,
-    PRIMARY KEY (EmployeeID, ProjectID)
-);
+### **Advanced Verification Questions**
 
+31. **Q:** How do you check if all foreign key constraints in the database are valid?
+    **A:**
 
-Q: How do you enforce multiple-column foreign keys?
-A:
+    ```sql
+    SELECT OBJECT_NAME(f.parent_object_id) AS ChildTable,
+           COL_NAME(fc.parent_object_id,fc.parent_column_id) AS FKColumn,
+           OBJECT_NAME(f.referenced_object_id) AS ParentTable
+    FROM sys.foreign_keys AS f
+    INNER JOIN sys.foreign_key_columns AS fc
+    ON f.object_id = fc.constraint_object_id;
+    ```
 
-ALTER TABLE EmployeeProjects
-ADD CONSTRAINT FK_EmployeeProject
-FOREIGN KEY (EmployeeID, ProjectID) REFERENCES Projects(EmployeeID, ProjectID);
+32. **Q:** How do you verify primary key constraints in MySQL?
+    **A:**
 
+    ```sql
+    SHOW KEYS FROM Employees WHERE Key_name = 'PRIMARY';
+    ```
 
-Q: How do you check if a column has a NOT NULL constraint?
-A:
+33. **Q:** How do you verify foreign key constraints in MySQL?
+    **A:**
 
-SELECT COLUMN_NAME, IS_NULLABLE 
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME = 'Employees';
+    ```sql
+    SELECT * 
+    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+    WHERE TABLE_NAME = 'Orders' AND REFERENCED_TABLE_NAME IS NOT NULL;
+    ```
 
+34. **Q:** How do you enforce unique values on a column without using a primary key?
+    **A:** Use a `UNIQUE` constraint:
 
-Q: How do you handle violations of foreign key constraints during bulk insert?
-A: Insert parent table data first, then child table data.
+    ```sql
+    ALTER TABLE Employees ADD CONSTRAINT UQ_Email UNIQUE (Email);
+    ```
 
-Q: How do you temporarily disable a foreign key constraint?
-A:
+35. **Q:** How do you enforce multiple-column primary keys?
+    **A:**
 
-ALTER TABLE Orders NOCHECK CONSTRAINT FK_EmployeeID;
+    ```sql
+    CREATE TABLE EmployeeProjects (
+        EmployeeID INT,
+        ProjectID INT,
+        PRIMARY KEY (EmployeeID, ProjectID)
+    );
+    ```
 
+36. **Q:** How do you enforce multiple-column foreign keys?
+    **A:**
 
-Q: How do you re-enable a foreign key constraint after disabling?
-A:
+    ```sql
+    ALTER TABLE EmployeeProjects
+    ADD CONSTRAINT FK_EmployeeProject
+    FOREIGN KEY (EmployeeID, ProjectID) REFERENCES Projects(EmployeeID, ProjectID);
+    ```
 
-ALTER TABLE Orders CHECK CONSTRAINT FK_EmployeeID;
+37. **Q:** How do you check if a column has a NOT NULL constraint?
+    **A:**
 
-Scenario-Based Questions
+    ```sql
+    SELECT COLUMN_NAME, IS_NULLABLE 
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'Employees';
+    ```
 
-Q: A table has duplicate primary key values. How do you fix it?
-A: Identify duplicates using GROUP BY and remove duplicates while keeping one row.
+38. **Q:** How do you handle violations of foreign key constraints during bulk insert?
+    **A:** Insert parent table data first, then child table data.
 
-Q: A foreign key column has orphan values. How do you fix it?
-A: Either delete orphan rows or insert matching rows in the parent table.
+39. **Q:** How do you temporarily disable a foreign key constraint?
+    **A:**
 
-Q: You need to create a hierarchical employee table. How do you enforce manager-subordinate relationships?
-A: Create a self-referencing foreign key:
+    ```sql
+    ALTER TABLE Orders NOCHECK CONSTRAINT FK_EmployeeID;
+    ```
 
-ALTER TABLE Employees
-ADD CONSTRAINT FK_Manager FOREIGN KEY (ManagerID) REFERENCES Employees(EmployeeID);
+40. **Q:** How do you re-enable a foreign key constraint after disabling?
+    **A:**
 
+    ```sql
+    ALTER TABLE Orders CHECK CONSTRAINT FK_EmployeeID;
+    ```
 
-Q: How can you ensure cascading delete does not violate business rules?
-A: Use ON DELETE NO ACTION or ON DELETE RESTRICT to prevent accidental deletion.
+---
 
-Q: How do you check which child tables are linked to a parent table?
-A:
+### **Scenario-Based Questions**
 
-SELECT * 
-FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
-WHERE UNIQUE_CONSTRAINT_NAME = 'PK_EmployeeID';
+41. **Q:** A table has duplicate primary key values. How do you fix it?
+    **A:** Identify duplicates using `GROUP BY` and remove duplicates while keeping one row.
 
+42. **Q:** A foreign key column has orphan values. How do you fix it?
+    **A:** Either delete orphan rows or insert matching rows in the parent table.
 
-Q: How do you check data integrity for multiple tables at once?
-A: Write queries joining child and parent tables to ensure all foreign key values exist in parent tables.
+43. **Q:** You need to create a hierarchical employee table. How do you enforce manager-subordinate relationships?
+    **A:** Create a self-referencing foreign key:
 
-Q: How do you verify that all primary key values are unique across partitions?
-A: Use GROUP BY with HAVING COUNT(*) > 1 across partitions.
+    ```sql
+    ALTER TABLE Employees
+    ADD CONSTRAINT FK_Manager FOREIGN KEY (ManagerID) REFERENCES Employees(EmployeeID);
+    ```
 
-Q: How can you test cascading updates for multiple foreign keys?
-A: Create multiple foreign key relationships with ON UPDATE CASCADE and update the parent table.
+44. **Q:** How can you ensure cascading delete does not violate business rules?
+    **A:** Use `ON DELETE NO ACTION` or `ON DELETE RESTRICT` to prevent accidental deletion.
 
-Q: How do you test if foreign key constraints prevent deletion when ON DELETE RESTRICT is used?
-A: Attempt to delete a parent row; it should fail if child rows exist.
+45. **Q:** How do you check which child tables are linked to a parent table?
+    **A:**
 
-Q: How can you generate a report of all primary and foreign key constraints in the database?
-A:
+    ```sql
+    SELECT * 
+    FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
+    WHERE UNIQUE_CONSTRAINT_NAME = 'PK_EmployeeID';
+    ```
 
-SELECT tc.TABLE_NAME, tc.CONSTRAINT_NAME, tc.CONSTRAINT_TYPE
-FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
-WHERE tc.CONSTRAINT_TYPE IN ('PRIMARY KEY','FOREIGN KEY');
+46. **Q:** How do you check data integrity for multiple tables at once?
+    **A:** Write queries joining child and parent tables to ensure all foreign key values exist in parent tables.
 
+47. **Q:** How do you verify that all primary key values are unique across partitions?
+    **A:** Use `GROUP BY` with `HAVING COUNT(*) > 1` across partitions.
 
-✅ These 50 Q&A cover conceptual understanding, syntax, verification methods, testing, and scenarios to prepare for SQL interviews and practical exercises on data integrity via PK/FK constraints.
+48. **Q:** How can you test cascading updates for multiple foreign keys?
+    **A:** Create multiple foreign key relationships with `ON UPDATE CASCADE` and update the parent table.
 
-If you want, I can make a second part with 50 more advanced practical SQL queries to actually test and validate data integrity on sample tables, so you can practice hands-on like an interview simulation.
+49. **Q:** How do you test if foreign key constraints prevent deletion when `ON DELETE RESTRICT` is used?
+    **A:** Attempt to delete a parent row; it should fail if child rows exist.
 
-Do you want me to do that?
+50. **Q:** How can you generate a report of all primary and foreign key constraints in the database?
+    **A:**
 
-SQL Interview & Practice Guide  give 50 q&a  for 
-Verify CRUD operations:
+    ```sql
+    SELECT tc.TABLE_NAME, tc.CONSTRAINT_NAME, tc.CONSTRAINT_TYPE
+    FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
+    WHERE tc.CONSTRAINT_TYPE IN ('PRIMARY KEY','FOREIGN KEY');
+    ```
 
-Absolutely! Here’s a comprehensive SQL Interview & Practice Guide with 50 questions and answers focused on verifying CRUD operations (Create, Read, Update, Delete). These are designed for both conceptual understanding and hands-on practice.
+---
 
-SQL Interview & Practice Guide: Verify CRUD Operations
-Basic Concepts
+✅ These 50 Q&A cover **all CRUD operations, verification techniques, transactions, safeguards, and practical scenarios** to prepare for SQL interviews and hands-on database testing.
 
-Q: What does CRUD stand for?
-A: CRUD stands for Create, Read, Update, Delete, the four basic operations on database records.
+---
 
-Q: Which SQL statement is used to create a new record?
-A: INSERT INTO statement.
+## **SQL Interview & Practice Guide: Verify CRUD Operations**
 
-Q: Which SQL statement is used to read data from a table?
-A: SELECT statement.
+### **Basic Concepts**
 
-Q: Which SQL statement is used to update existing records?
-A: UPDATE statement.
+1. **Q:** What does CRUD stand for?
+   **A:** CRUD stands for **Create, Read, Update, Delete**, the four basic operations on database records.
 
-Q: Which SQL statement is used to delete records?
-A: DELETE FROM statement.
+2. **Q:** Which SQL statement is used to create a new record?
+   **A:** `INSERT INTO` statement.
 
-Q: Can you insert multiple rows in a single SQL query?
-A: Yes, using multiple VALUES clauses:
+3. **Q:** Which SQL statement is used to read data from a table?
+   **A:** `SELECT` statement.
 
-INSERT INTO Employees (EmployeeID, Name) VALUES 
-(1, 'Alice'),
-(2, 'Bob');
+4. **Q:** Which SQL statement is used to update existing records?
+   **A:** `UPDATE` statement.
 
+5. **Q:** Which SQL statement is used to delete records?
+   **A:** `DELETE FROM` statement.
 
-Q: How do you select all columns from a table?
-A:
+6. **Q:** Can you insert multiple rows in a single SQL query?
+   **A:** Yes, using multiple `VALUES` clauses:
 
-SELECT * FROM Employees;
+   ```sql
+   INSERT INTO Employees (EmployeeID, Name) VALUES 
+   (1, 'Alice'),
+   (2, 'Bob');
+   ```
 
+7. **Q:** How do you select all columns from a table?
+   **A:**
 
-Q: How do you select specific columns from a table?
-A:
+   ```sql
+   SELECT * FROM Employees;
+   ```
 
-SELECT EmployeeID, Name FROM Employees;
+8. **Q:** How do you select specific columns from a table?
+   **A:**
 
+   ```sql
+   SELECT EmployeeID, Name FROM Employees;
+   ```
 
-Q: How do you select distinct values in a column?
-A:
+9. **Q:** How do you select distinct values in a column?
+   **A:**
 
+   ```sql
+   SELECT DISTINCT Department FROM Employees;
+   ```
+Sure! Let’s break it down.
+
+---
+
+### **SQL Statement:**
+
+```sql
 SELECT DISTINCT Department FROM Employees;
+```
 
+---
 
-Q: How do you filter records based on a condition?
-A: Using WHERE clause:
+ **Meaning:**
 
-SELECT * FROM Employees WHERE Department = 'HR';
+2. **`DISTINCT`**
 
-Create Operation (INSERT)
+   * Ensures that **only unique values** are returned.
+   * If a column has duplicate values, `DISTINCT` **removes duplicates**.
+---
 
-Q: How do you insert a single row into a table?
-A:
+### **Effect:**
 
-INSERT INTO Employees (EmployeeID, Name, Department) VALUES (1, 'Alice', 'HR');
+* Returns a **list of all unique departments** from the `Employees` table.
+* Duplicate department names are **shown only once**.
 
+---
 
-Q: How do you insert data into all columns without specifying column names?
-A:
+### **Example:**
 
-INSERT INTO Employees VALUES (2, 'Bob', 'IT');
+**Employees Table:**
 
+| EmployeeID | FirstName | Department |
+| ---------- | --------- | ---------- |
+| 101        | Ahmed     | HR         |
+| 102        | Sara      | IT         |
+| 103        | John      | IT         |
+| 104        | Mona      | Sales      |
+| 105        | Ali       | HR         |
 
-Q: What happens if you insert a NULL into a NOT NULL column?
-A: SQL will throw a constraint violation error.
+**Query Result:**
 
-Q: How do you insert data using a SELECT from another table?
-A:
+| Department |
+| ---------- |
+| HR         |
+| IT         |
+| Sales      |
 
-INSERT INTO EmployeesBackup (EmployeeID, Name, Department)
-SELECT EmployeeID, Name, Department FROM Employees;
+---
 
+✅ **Key Point:**
 
-Q: How do you verify that an INSERT operation was successful?
-A: Use a SELECT query:
+* `DISTINCT` is very useful when you want to **list unique values** in a column or combination of columns.
 
-SELECT * FROM Employees WHERE EmployeeID = 1;
+---
 
 
-Q: How do you handle duplicate primary key values during insert?
-A: SQL will reject the insert. Use ON DUPLICATE KEY UPDATE in MySQL or MERGE in SQL Server.
+10. **Q:** How do you filter records based on a condition?
+    **A:** Using `WHERE` clause:
 
-Q: How do you insert multiple rows efficiently?
-A:
+    ```sql
+    SELECT * FROM Employees WHERE Department = 'HR';
+    ```
 
-INSERT INTO Employees (EmployeeID, Name) VALUES (3, 'Charlie'), (4, 'David');
+---
 
+### **Create Operation (INSERT)**
 
-Q: How do you insert default values for certain columns?
-A:
+11. **Q:** How do you insert a single row into a table?
+    **A:**
 
-INSERT INTO Employees (EmployeeID, Name) VALUES (5, 'Eve');
+    ```sql
+    INSERT INTO Employees (EmployeeID, Name, Department) VALUES (1, 'Alice', 'HR');
+    ```
 
+12. **Q:** How do you insert data into all columns without specifying column names?
+    **A:**
 
-Q: How do you check auto-increment values after insert?
-A:
+    ```sql
+    INSERT INTO Employees VALUES (2, 'Bob', 'IT');
+    ```
 
-SELECT LAST_INSERT_ID(); -- MySQL
-SELECT SCOPE_IDENTITY(); -- SQL Server
+13. **Q:** What happens if you insert a NULL into a NOT NULL column?
+    **A:** SQL will throw a constraint violation error.
 
+14. **Q:** How do you insert data using a `SELECT` from another table?
+    **A:**
 
-Q: How do you insert a row but avoid inserting duplicates?
-A: Use INSERT IGNORE (MySQL) or MERGE (SQL Server).
+    ```sql
+    INSERT INTO EmployeesBackup (EmployeeID, Name, Department)
+    SELECT EmployeeID, Name, Department FROM Employees;
+    ```
 
-Read Operation (SELECT)
+15. **Q:** How do you verify that an `INSERT` operation was successful?
+    **A:** Use a `SELECT` query:
 
-Q: How do you read all rows from a table?
-A:
+    ```sql
+    SELECT * FROM Employees WHERE EmployeeID = 1;
+    ```
 
-SELECT * FROM Employees;
+16. **Q:** How do you handle duplicate primary key values during insert?
+    **A:** SQL will reject the insert. Use `ON DUPLICATE KEY UPDATE` in MySQL or `MERGE` in SQL Server.
 
+17. **Q:** How do you insert multiple rows efficiently?
+    **A:**
 
-Q: How do you read rows with specific conditions?
-A:
+    ```sql
+    INSERT INTO Employees (EmployeeID, Name) VALUES (3, 'Charlie'), (4, 'David');
+    ```
 
-SELECT * FROM Employees WHERE Department = 'IT';
+18. **Q:** How do you insert default values for certain columns?
+    **A:**
 
+    ```sql
+    INSERT INTO Employees (EmployeeID, Name) VALUES (5, 'Eve');
+    ```
 
-Q: How do you read rows sorted by a column?
-A:
+19. **Q:** How do you check auto-increment values after insert?
+    **A:**
 
-SELECT * FROM Employees ORDER BY Name ASC;
+    ```sql
+    SELECT LAST_INSERT_ID(); -- MySQL
+    SELECT SCOPE_IDENTITY(); -- SQL Server
+    ```
 
+20. **Q:** How do you insert a row but avoid inserting duplicates?
+    **A:** Use `INSERT IGNORE` (MySQL) or `MERGE` (SQL Server).
 
-Q: How do you read top N rows?
-A:
+---
 
-SELECT TOP 5 * FROM Employees; -- SQL Server
-SELECT * FROM Employees LIMIT 5; -- MySQL
+### **Read Operation (SELECT)**
 
+21. **Q:** How do you read all rows from a table?
+    **A:**
 
-Q: How do you read rows using pattern matching?
-A:
+    ```sql
+    SELECT * FROM Employees;
+    ```
 
-SELECT * FROM Employees WHERE Name LIKE 'A%';
+22. **Q:** How do you read rows with specific conditions?
+    **A:**
 
+    ```sql
+    SELECT * FROM Employees WHERE Department = 'IT';
+    ```
 
-Q: How do you read data from multiple tables?
-A: Use JOIN:
+23. **Q:** How do you read rows sorted by a column?
+    **A:**
 
-SELECT e.Name, d.DepartmentName
-FROM Employees e
-JOIN Departments d ON e.Department = d.DepartmentID;
+    ```sql
+    SELECT * FROM Employees ORDER BY Name ASC;
+    ```
 
+24. **Q:** How do you read top N rows?
+    **A:**
 
-Q: How do you read aggregated data?
-A:
+    ```sql
+    SELECT TOP 5 * FROM Employees; -- SQL Server
+    SELECT * FROM Employees LIMIT 5; -- MySQL
+    ```
 
-SELECT Department, COUNT(*) AS EmployeeCount
-FROM Employees
-GROUP BY Department;
+25. **Q:** How do you read rows using pattern matching?
+    **A:**
 
+    ```sql
+    SELECT * FROM Employees WHERE Name LIKE 'A%';
+    ```
 
-Q: How do you filter aggregated data?
-A:
+26. **Q:** How do you read data from multiple tables?
+    **A:** Use `JOIN`:
 
-SELECT Department, COUNT(*) AS EmployeeCount
-FROM Employees
-GROUP BY Department
-HAVING COUNT(*) > 5;
+    ```sql
+    SELECT e.Name, d.DepartmentName
+    FROM Employees e
+    JOIN Departments d ON e.Department = d.DepartmentID;
+    ```
 
+27. **Q:** How do you read aggregated data?
+    **A:**
 
-Q: How do you read distinct combinations of multiple columns?
-A:
+    ```sql
+    SELECT Department, COUNT(*) AS EmployeeCount
+    FROM Employees
+    GROUP BY Department;
+    ```
 
-SELECT DISTINCT Department, Role FROM Employees;
+28. **Q:** How do you filter aggregated data?
+    **A:**
 
+    ```sql
+    SELECT Department, COUNT(*) AS EmployeeCount
+    FROM Employees
+    GROUP BY Department
+    HAVING COUNT(*) > 5;
+    ```
 
-Q: How do you read data using subqueries?
-A:
+29. **Q:** How do you read distinct combinations of multiple columns?
+    **A:**
 
-SELECT * FROM Employees
-WHERE Department IN (SELECT DepartmentID FROM Departments WHERE Location='NY');
+    ```sql
+    SELECT DISTINCT Department, Role FROM Employees;
+    ```
 
-Update Operation (UPDATE)
+30. **Q:** How do you read data using subqueries?
+    **A:**
 
-Q: How do you update a single row?
-A:
+    ```sql
+    SELECT * FROM Employees
+    WHERE Department IN (SELECT DepartmentID FROM Departments WHERE Location='NY');
+    ```
 
-UPDATE Employees SET Department='Finance' WHERE EmployeeID=1;
+---
 
+### **Update Operation (UPDATE)**
 
-Q: How do you update multiple rows?
-A:
+31. **Q:** How do you update a single row?
+    **A:**
 
-UPDATE Employees SET Department='HR' WHERE Department='Human Resources';
+    ```sql
+    UPDATE Employees SET Department='Finance' WHERE EmployeeID=1;
+    ```
 
+32. **Q:** How do you update multiple rows?
+    **A:**
 
-Q: How do you update based on a join with another table?
-A:
+    ```sql
+    UPDATE Employees SET Department='HR' WHERE Department='Human Resources';
+    ```
 
-UPDATE e
-SET e.Department = d.NewDepartment
-FROM Employees e
-JOIN DepartmentChanges d ON e.EmployeeID = d.EmployeeID;
+33. **Q:** How do you update based on a join with another table?
+    **A:**
 
+    ```sql
+    UPDATE e
+    SET e.Department = d.NewDepartment
+    FROM Employees e
+    JOIN DepartmentChanges d ON e.EmployeeID = d.EmployeeID;
+    ```
 
-Q: How do you prevent accidental updates to all rows?
-A: Always include a WHERE clause.
+34. **Q:** How do you prevent accidental updates to all rows?
+    **A:** Always include a `WHERE` clause.
 
-Q: How do you verify an update operation?
-A:
+35. **Q:** How do you verify an update operation?
+    **A:**
 
-SELECT * FROM Employees WHERE EmployeeID=1;
+    ```sql
+    SELECT * FROM Employees WHERE EmployeeID=1;
+    ```
 
+36. **Q:** How do you update a column using values from another column in the same table?
+    **A:**
 
-Q: How do you update a column using values from another column in the same table?
-A:
+    ```sql
+    UPDATE Employees SET Department = PreviousDepartment;
+    ```
 
-UPDATE Employees SET Department = PreviousDepartment;
+37. **Q:** How do you increment a numeric column?
+    **A:**
 
+    ```sql
+    UPDATE Employees SET Salary = Salary + 1000 WHERE Department='IT';
+    ```
 
-Q: How do you increment a numeric column?
-A:
+38. **Q:** How do you update multiple columns at once?
+    **A:**
 
-UPDATE Employees SET Salary = Salary + 1000 WHERE Department='IT';
+    ```sql
+    UPDATE Employees SET Department='IT', Salary=5000 WHERE EmployeeID=2;
+    ```
 
+39. **Q:** How do you rollback an update if something goes wrong?
+    **A:** Use transactions:
 
-Q: How do you update multiple columns at once?
-A:
+    ```sql
+    BEGIN TRANSACTION;
+    UPDATE Employees SET Salary=6000 WHERE EmployeeID=3;
+    ROLLBACK; -- or COMMIT;
+    ```
 
-UPDATE Employees SET Department='IT', Salary=5000 WHERE EmployeeID=2;
+40. **Q:** How do you update rows conditionally using CASE?
+    **A:**
 
+    ```sql
+    UPDATE Employees
+    SET Department = CASE WHEN Department='IT' THEN 'Tech' ELSE Department END;
+    ```
 
-Q: How do you rollback an update if something goes wrong?
-A: Use transactions:
+---
 
-BEGIN TRANSACTION;
-UPDATE Employees SET Salary=6000 WHERE EmployeeID=3;
-ROLLBACK; -- or COMMIT;
+### **Delete Operation (DELETE)**
 
+41. **Q:** How do you delete a single row?
+    **A:**
 
-Q: How do you update rows conditionally using CASE?
-A:
+    ```sql
+    DELETE FROM Employees WHERE EmployeeID=1;
+    ```
 
-UPDATE Employees
-SET Department = CASE WHEN Department='IT' THEN 'Tech' ELSE Department END;
+42. **Q:** How do you delete multiple rows?
+    **A:**
 
-Delete Operation (DELETE)
+    ```sql
+    DELETE FROM Employees WHERE Department='Temp';
+    ```
 
-Q: How do you delete a single row?
-A:
+43. **Q:** How do you delete all rows without dropping the table?
+    **A:**
 
-DELETE FROM Employees WHERE EmployeeID=1;
+    ```sql
+    DELETE FROM Employees;
+    ```
 
+44. **Q:** How do you truncate a table?
+    **A:**
 
-Q: How do you delete multiple rows?
-A:
+    ```sql
+    TRUNCATE TABLE Employees;
+    ```
 
-DELETE FROM Employees WHERE Department='Temp';
+45. **Q:** What is the difference between DELETE and TRUNCATE?
+    **A:** `DELETE` can have a `WHERE` clause and is logged; `TRUNCATE` removes all rows and resets identity columns.
 
+46. **Q:** How do you verify a delete operation?
+    **A:**
 
-Q: How do you delete all rows without dropping the table?
-A:
+    ```sql
+    SELECT * FROM Employees WHERE EmployeeID=1;
+    ```
 
-DELETE FROM Employees;
+47. **Q:** How do you delete using a subquery?
+    **A:**
 
+    ```sql
+    DELETE FROM Employees
+    WHERE Department IN (SELECT DepartmentID FROM Departments WHERE Location='NY');
+    ```
 
-Q: How do you truncate a table?
-A:
+48. **Q:** How do you prevent accidental delete of all rows?
+    **A:** Always use a `WHERE` clause; consider using transactions.
 
-TRUNCATE TABLE Employees;
+49. **Q:** How do you delete rows based on a join with another table?
+    **A:**
 
+    ```sql
+    DELETE e
+    FROM Employees e
+    JOIN TempEmployees t ON e.EmployeeID = t.EmployeeID;
+    ```
 
-Q: What is the difference between DELETE and TRUNCATE?
-A: DELETE can have a WHERE clause and is logged; TRUNCATE removes all rows and resets identity columns.
+50. **Q:** How do you undo a delete operation?
+    **A:** Use transactions:
 
-Q: How do you verify a delete operation?
-A:
+    ```sql
+    BEGIN TRANSACTION;
+    DELETE FROM Employees WHERE EmployeeID=5;
+    ROLLBACK; -- undo
+    COMMIT; -- confirm
+    ```
 
-SELECT * FROM Employees WHERE EmployeeID=1;
 
+---
 
-Q: How do you delete using a subquery?
-A:
+##✅  **50 Q&A cover conceptual understanding, syntax, testing, verification, and scenarios** for **triggers, stored procedures, and functions**.
 
-DELETE FROM Employees
-WHERE Department IN (SELECT DepartmentID FROM Departments WHERE Location='NY');
+---
 
+---
 
-Q: How do you prevent accidental delete of all rows?
-A: Always use a WHERE clause; consider using transactions.
+ **SQL Interview & Practice Guide: Verify Triggers, Stored Procedures, and Functions**
 
-Q: How do you delete rows based on a join with another table?
-A:
+---
 
-DELETE e
-FROM Employees e
-JOIN TempEmployees t ON e.EmployeeID = t.EmployeeID;
+### **Basic Concepts**
 
+1. **Q:** What is a trigger in SQL?
+   **A:** A trigger is a special kind of stored procedure that automatically executes in response to certain events on a table or view (INSERT, UPDATE, DELETE).
 
-Q: How do you undo a delete operation?
-A: Use transactions:
+2. **Q:** What is a stored procedure?
+   **A:** A stored procedure is a precompiled set of SQL statements stored in the database and executed as a single unit.
 
-BEGIN TRANSACTION;
-DELETE FROM Employees WHERE EmployeeID=5;
-ROLLBACK; -- undo
-COMMIT; -- confirm
+3. **Q:** What is a function in SQL?
+   **A:** A function is a database object that returns a single value or table and can be used in SQL statements.
 
+4. **Q:** What is the difference between a trigger and a stored procedure?
+   **A:** Triggers execute automatically based on table events; stored procedures execute explicitly by calling them.
 
-✅ These 50 Q&A cover all CRUD operations, verification techniques, transactions, safeguards, and practical scenarios to prepare for SQL interviews and hands-on database testing.
+5. **Q:** Can a function modify database tables?
+   **A:** In most SQL databases, functions cannot perform actions that modify tables; they are usually read-only.
 
-If you want, I can make a combined mega guide with 150+ SQL interview Q&A, including Data Integrity, CRUD, Joins, Indexing, and Advanced SQL for full interview prep.
+6. **Q:** Can a trigger call a stored procedure?
+   **A:** Yes, triggers can call stored procedures to perform complex logic.
 
-Do you want me to do that?
+7. **Q:** What types of triggers exist?
+   **A:** `AFTER`, `BEFORE`, `INSTEAD OF` triggers.
 
-SQL Interview & Practice Guide  give 50 q&a  for 
-Verify triggers, stored procedures, and functions.
+8. **Q:** What types of functions exist in SQL?
+   **A:** Scalar functions (return single value), Table-valued functions (return a table).
 
-Absolutely! Here’s a SQL Interview & Practice Guide with 50 questions and answers focused on verifying triggers, stored procedures, and functions. These cover conceptual, practical, and testing scenarios, suitable for interview prep and hands-on practice.
+9. **Q:** What is the difference between inline and multi-statement table-valued functions?
+   **A:** Inline functions contain a single SELECT statement; multi-statement functions can have multiple statements with table variable.
 
-SQL Interview & Practice Guide: Verify Triggers, Stored Procedures, and Functions
-Basic Concepts
+10. **Q:** What are the advantages of stored procedures?
+    **A:** Precompiled execution, code reuse, reduced network traffic, centralized logic.
 
-Q: What is a trigger in SQL?
-A: A trigger is a special kind of stored procedure that automatically executes in response to certain events on a table or view (INSERT, UPDATE, DELETE).
+---
 
-Q: What is a stored procedure?
-A: A stored procedure is a precompiled set of SQL statements stored in the database and executed as a single unit.
+### **Creating and Verifying Stored Procedures**
 
-Q: What is a function in SQL?
-A: A function is a database object that returns a single value or table and can be used in SQL statements.
+11. **Q:** How do you create a simple stored procedure?
+    **A:**
 
-Q: What is the difference between a trigger and a stored procedure?
-A: Triggers execute automatically based on table events; stored procedures execute explicitly by calling them.
+    ```sql
+    CREATE PROCEDURE GetEmployee
+    @EmployeeID INT
+    AS
+    SELECT * FROM Employees WHERE EmployeeID = @EmployeeID;
+    ```
 
-Q: Can a function modify database tables?
-A: In most SQL databases, functions cannot perform actions that modify tables; they are usually read-only.
+12. **Q:** How do you execute a stored procedure?
+    **A:**
 
-Q: Can a trigger call a stored procedure?
-A: Yes, triggers can call stored procedures to perform complex logic.
+    ```sql
+    EXEC GetEmployee @EmployeeID = 1;
+    ```
 
-Q: What types of triggers exist?
-A: AFTER, BEFORE, INSTEAD OF triggers.
+13. **Q:** How do you alter an existing stored procedure?
+    **A:**
 
-Q: What types of functions exist in SQL?
-A: Scalar functions (return single value), Table-valued functions (return a table).
+    ```sql
+    ALTER PROCEDURE GetEmployee
+    @EmployeeID INT
+    AS
+    SELECT Name, Department FROM Employees WHERE EmployeeID=@EmployeeID;
+    ```
 
-Q: What is the difference between inline and multi-statement table-valued functions?
-A: Inline functions contain a single SELECT statement; multi-statement functions can have multiple statements with table variable.
+14. **Q:** How do you drop a stored procedure?
+    **A:**
 
-Q: What are the advantages of stored procedures?
-A: Precompiled execution, code reuse, reduced network traffic, centralized logic.
+    ```sql
+    DROP PROCEDURE GetEmployee;
+    ```
 
-Creating and Verifying Stored Procedures
+15. **Q:** How do you check if a stored procedure exists in SQL Server?
+    **A:**
 
-Q: How do you create a simple stored procedure?
-A:
+    ```sql
+    SELECT * FROM sys.objects WHERE type='P' AND name='GetEmployee';
+    ```
 
-CREATE PROCEDURE GetEmployee
-@EmployeeID INT
-AS
-SELECT * FROM Employees WHERE EmployeeID = @EmployeeID;
+16. **Q:** How do you pass multiple parameters to a stored procedure?
+    **A:**
 
+    ```sql
+    CREATE PROCEDURE GetEmployeeDetails
+    @EmployeeID INT,
+    @Department VARCHAR(50)
+    AS
+    SELECT * FROM Employees WHERE EmployeeID=@EmployeeID AND Department=@Department;
+    ```
 
-Q: How do you execute a stored procedure?
-A:
+17. **Q:** How do you verify stored procedure execution results?
+    **A:** Execute the procedure and check the returned data:
 
-EXEC GetEmployee @EmployeeID = 1;
+    ```sql
+    EXEC GetEmployeeDetails 1, 'IT';
+    ```
 
+18. **Q:** How do you handle errors inside a stored procedure?
+    **A:** Use `TRY...CATCH` blocks:
 
-Q: How do you alter an existing stored procedure?
-A:
+    ```sql
+    BEGIN TRY
+        -- SQL statements
+    END TRY
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE();
+    END CATCH;
+    ```
 
-ALTER PROCEDURE GetEmployee
-@EmployeeID INT
-AS
-SELECT Name, Department FROM Employees WHERE EmployeeID=@EmployeeID;
+19. **Q:** How do you test stored procedures for edge cases?
+    **A:** Provide boundary or invalid inputs and verify expected results or error handling.
 
+20. **Q:** Can stored procedures return output parameters?
+    **A:** Yes:
 
-Q: How do you drop a stored procedure?
-A:
+    ```sql
+    CREATE PROCEDURE GetEmployeeName
+    @EmployeeID INT,
+    @Name VARCHAR(50) OUTPUT
+    AS
+    SELECT @Name = Name FROM Employees WHERE EmployeeID=@EmployeeID;
+    ```
 
-DROP PROCEDURE GetEmployee;
+---
 
+### **Creating and Verifying Functions**
 
-Q: How do you check if a stored procedure exists in SQL Server?
-A:
+21. **Q:** How do you create a scalar function?
+    **A:**
 
-SELECT * FROM sys.objects WHERE type='P' AND name='GetEmployee';
+    ```sql
+    CREATE FUNCTION GetEmployeeSalary(@EmployeeID INT)
+    RETURNS INT
+    AS
+    BEGIN
+        DECLARE @Salary INT;
+        SELECT @Salary = Salary FROM Employees WHERE EmployeeID=@EmployeeID;
+        RETURN @Salary;
+    END;
+    ```
 
+22. **Q:** How do you use a scalar function in a SELECT statement?
+    **A:**
 
-Q: How do you pass multiple parameters to a stored procedure?
-A:
+    ```sql
+    SELECT Name, dbo.GetEmployeeSalary(EmployeeID) AS Salary FROM Employees;
+    ```
 
-CREATE PROCEDURE GetEmployeeDetails
-@EmployeeID INT,
-@Department VARCHAR(50)
-AS
-SELECT * FROM Employees WHERE EmployeeID=@EmployeeID AND Department=@Department;
+23. **Q:** How do you create a table-valued function?
+    **A:**
 
+    ```sql
+    CREATE FUNCTION GetEmployeesByDepartment(@Department VARCHAR(50))
+    RETURNS TABLE
+    AS
+    RETURN (SELECT * FROM Employees WHERE Department=@Department);
+    ```
 
-Q: How do you verify stored procedure execution results?
-A: Execute the procedure and check the returned data:
+24. **Q:** How do you query a table-valued function?
+    **A:**
 
-EXEC GetEmployeeDetails 1, 'IT';
+    ```sql
+    SELECT * FROM dbo.GetEmployeesByDepartment('IT');
+    ```
 
+25. **Q:** How do you alter a function?
+    **A:**
 
-Q: How do you handle errors inside a stored procedure?
-A: Use TRY...CATCH blocks:
+    ```sql
+    ALTER FUNCTION GetEmployeeSalary(@EmployeeID INT) RETURNS INT AS ...
+    ```
 
-BEGIN TRY
-    -- SQL statements
-END TRY
-BEGIN CATCH
-    PRINT ERROR_MESSAGE();
-END CATCH;
+26. **Q:** How do you drop a function?
+    **A:**
 
+    ```sql
+    DROP FUNCTION GetEmployeeSalary;
+    ```
 
-Q: How do you test stored procedures for edge cases?
-A: Provide boundary or invalid inputs and verify expected results or error handling.
+27. **Q:** How do you verify function existence?
+    **A:**
 
-Q: Can stored procedures return output parameters?
-A: Yes:
+    ```sql
+    SELECT * FROM sys.objects WHERE type='FN' AND name='GetEmployeeSalary';
+    ```
 
-CREATE PROCEDURE GetEmployeeName
-@EmployeeID INT,
-@Name VARCHAR(50) OUTPUT
-AS
-SELECT @Name = Name FROM Employees WHERE EmployeeID=@EmployeeID;
+28. **Q:** Can functions contain transactions?
+    **A:** No, functions are usually restricted to read-only operations.
 
-Creating and Verifying Functions
+29. **Q:** How do you test a function?
+    **A:** Call the function with different input values and validate the output.
 
-Q: How do you create a scalar function?
-A:
+30. **Q:** How do you use a function in WHERE clause?
+    **A:**
 
-CREATE FUNCTION GetEmployeeSalary(@EmployeeID INT)
-RETURNS INT
-AS
-BEGIN
-    DECLARE @Salary INT;
-    SELECT @Salary = Salary FROM Employees WHERE EmployeeID=@EmployeeID;
-    RETURN @Salary;
-END;
+    ```sql
+    SELECT * FROM Employees WHERE dbo.GetEmployeeSalary(EmployeeID) > 5000;
+    ```
 
+---
 
-Q: How do you use a scalar function in a SELECT statement?
-A:
+### **Creating and Verifying Triggers**
 
-SELECT Name, dbo.GetEmployeeSalary(EmployeeID) AS Salary FROM Employees;
+31. **Q:** How do you create an AFTER INSERT trigger?
+    **A:**
 
+    ```sql
+    CREATE TRIGGER trgAfterInsertEmployee
+    ON Employees
+    AFTER INSERT
+    AS
+    BEGIN
+        PRINT 'New employee added';
+    END;
+    ```
 
-Q: How do you create a table-valued function?
-A:
+32. **Q:** How do you create a BEFORE UPDATE trigger?
+    **A:** (MySQL example)
 
-CREATE FUNCTION GetEmployeesByDepartment(@Department VARCHAR(50))
-RETURNS TABLE
-AS
-RETURN (SELECT * FROM Employees WHERE Department=@Department);
+    ```sql
+    CREATE TRIGGER trgBeforeUpdateEmployee
+    BEFORE UPDATE ON Employees
+    FOR EACH ROW
+    SET NEW.LastModified = NOW();
+    ```
 
+33. **Q:** How do you create an INSTEAD OF DELETE trigger?
+    **A:**
 
-Q: How do you query a table-valued function?
-A:
+    ```sql
+    CREATE TRIGGER trgInsteadOfDelete
+    ON Employees
+    INSTEAD OF DELETE
+    AS
+    BEGIN
+        PRINT 'Delete prevented';
+    END;
+    ```
 
-SELECT * FROM dbo.GetEmployeesByDepartment('IT');
+34. **Q:** How do you verify trigger existence?
+    **A:**
 
+    ```sql
+    SELECT * FROM sys.triggers WHERE name='trgAfterInsertEmployee';
+    ```
 
-Q: How do you alter a function?
-A:
+35. **Q:** How do you test a trigger?
+    **A:** Perform the action (INSERT/UPDATE/DELETE) and verify trigger behavior, e.g., log table updates or printed messages.
 
-ALTER FUNCTION GetEmployeeSalary(@EmployeeID INT) RETURNS INT AS ...
+36. **Q:** How do you disable a trigger?
+    **A:**
 
+    ```sql
+    DISABLE TRIGGER trgAfterInsertEmployee ON Employees;
+    ```
 
-Q: How do you drop a function?
-A:
+37. **Q:** How do you enable a trigger?
+    **A:**
 
-DROP FUNCTION GetEmployeeSalary;
+    ```sql
+    ENABLE TRIGGER trgAfterInsertEmployee ON Employees;
+    ```
 
+38. **Q:** How do you drop a trigger?
+    **A:**
 
-Q: How do you verify function existence?
-A:
+    ```sql
+    DROP TRIGGER trgAfterInsertEmployee;
+    ```
 
-SELECT * FROM sys.objects WHERE type='FN' AND name='GetEmployeeSalary';
+39. **Q:** How do you view all triggers on a table?
+    **A:**
 
+    ```sql
+    SELECT * FROM sys.triggers WHERE parent_id = OBJECT_ID('Employees');
+    ```
 
-Q: Can functions contain transactions?
-A: No, functions are usually restricted to read-only operations.
+40. **Q:** How do you check which events a trigger responds to?
+    **A:** Query `sys.triggers` and `sys.trigger_events` (SQL Server) or use `SHOW TRIGGERS` in MySQL.
 
-Q: How do you test a function?
-A: Call the function with different input values and validate the output.
+---
 
-Q: How do you use a function in WHERE clause?
-A:
+### **Testing and Verification Scenarios**
 
-SELECT * FROM Employees WHERE dbo.GetEmployeeSalary(EmployeeID) > 5000;
+41. **Q:** How do you verify that a trigger correctly inserts audit records?
+    **A:** Insert/update/delete a row and check the audit table for expected entries.
 
-Creating and Verifying Triggers
+42. **Q:** How do you test a stored procedure with multiple output parameters?
+    **A:** Call the procedure and verify the values of all output parameters.
 
-Q: How do you create an AFTER INSERT trigger?
-A:
+43. **Q:** How do you test a stored procedure with transactions?
+    **A:** Intentionally cause an error to see if rollback occurs as expected.
 
-CREATE TRIGGER trgAfterInsertEmployee
-ON Employees
-AFTER INSERT
-AS
-BEGIN
-    PRINT 'New employee added';
-END;
+44. **Q:** How do you test a function with boundary input values?
+    **A:** Call the function with min/max or invalid values and verify behavior.
 
+45. **Q:** How do you check trigger execution order when multiple triggers exist on the same table?
+    **A:** Use `sp_helptrigger Employees` (SQL Server) or `SHOW TRIGGERS` (MySQL).
 
-Q: How do you create a BEFORE UPDATE trigger?
-A: (MySQL example)
+46. **Q:** How do you prevent a trigger from causing infinite loops?
+    **A:** Use `IF UPDATE(ColumnName)` conditions and avoid recursive updates.
 
-CREATE TRIGGER trgBeforeUpdateEmployee
-BEFORE UPDATE ON Employees
-FOR EACH ROW
-SET NEW.LastModified = NOW();
+47. **Q:** How do you verify error handling in stored procedures?
+    **A:** Call the procedure with invalid data and check that errors are logged or handled.
 
+48. **Q:** How do you verify that a function returns NULL for non-existent data?
+    **A:** Call the function with an ID that doesn’t exist in the table.
 
-Q: How do you create an INSTEAD OF DELETE trigger?
-A:
+49. **Q:** How do you check if a trigger affects performance?
+    **A:** Use execution plan, profiler, or measure insert/update/delete timings before and after enabling the trigger.
 
-CREATE TRIGGER trgInsteadOfDelete
-ON Employees
-INSTEAD OF DELETE
-AS
-BEGIN
-    PRINT 'Delete prevented';
-END;
+50. **Q:** How do you document triggers, functions, and stored procedures for QA verification?
+    **A:** Maintain a table with columns: Name, Type (Trigger/SP/Function), Table, Event, Input/Output, Purpose, Test Cases.
 
 
-Q: How do you verify trigger existence?
-A:
+---
 
-SELECT * FROM sys.triggers WHERE name='trgAfterInsertEmployee';
+✅ This guide provides **50 join-related Q&A/exercises** with **sample table values and expected outputs**, ready for **interview prep and practical SQL verification**.
 
+---
 
-Q: How do you test a trigger?
-A: Perform the action (INSERT/UPDATE/DELETE) and verify trigger behavior, e.g., log table updates or printed messages.
+---
 
-Q: How do you disable a trigger?
-A:
+## **SQL Interview & Practice Guide: Joins with Table Values and Output Verification**
 
-DISABLE TRIGGER trgAfterInsertEmployee ON Employees;
+### **Sample Tables**
 
+**Employees Table**
 
-Q: How do you enable a trigger?
-A:
+| EmployeeID | Name    | DepartmentID |
+| ---------- | ------- | ------------ |
+| 1          | Alice   | 10           |
+| 2          | Bob     | 20           |
+| 3          | Charlie | 10           |
+| 4          | David   | 30           |
+| 5          | Eve     | 20           |
 
-ENABLE TRIGGER trgAfterInsertEmployee ON Employees;
+**Departments Table**
 
+| DepartmentID | DepartmentName |
+| ------------ | -------------- |
+| 10           | HR             |
+| 20           | IT             |
+| 30           | Finance        |
+| 40           | Marketing      |
 
-Q: How do you drop a trigger?
-A:
+---
 
-DROP TRIGGER trgAfterInsertEmployee;
+### **Basic Join Questions**
 
+1. **Q:** What is an INNER JOIN?
+   **A:** Returns only matching rows between two tables.
 
-Q: How do you view all triggers on a table?
-A:
+   ```sql
+   SELECT e.Name, d.DepartmentName
+   FROM Employees e
+   INNER JOIN Departments d
+   ON e.DepartmentID = d.DepartmentID;
+   ```
 
-SELECT * FROM sys.triggers WHERE parent_id = OBJECT_ID('Employees');
+   **Output:**
 
+   | Name    | DepartmentName |
+   | ------- | -------------- |
+   | Alice   | HR             |
+   | Bob     | IT             |
+   | Charlie | HR             |
+   | David   | Finance        |
+   | Eve     | IT             |
 
-Q: How do you check which events a trigger responds to?
-A: Query sys.triggers and sys.trigger_events (SQL Server) or use SHOW TRIGGERS in MySQL.
+2. **Q:** What is a LEFT JOIN?
+   **A:** Returns all rows from the left table, with NULLs for non-matching rows from the right table.
 
-Testing and Verification Scenarios
+   ```sql
+   SELECT e.Name, d.DepartmentName
+   FROM Employees e
+   LEFT JOIN Departments d
+   ON e.DepartmentID = d.DepartmentID;
+   ```
 
-Q: How do you verify that a trigger correctly inserts audit records?
-A: Insert/update/delete a row and check the audit table for expected entries.
+   **Output:** Same as INNER JOIN here, all employees have departments, but if Employee had DepartmentID=50, it would show NULL.
 
-Q: How do you test a stored procedure with multiple output parameters?
-A: Call the procedure and verify the values of all output parameters.
+3. **Q:** What is a RIGHT JOIN?
+   **A:** Returns all rows from the right table, with NULLs for non-matching rows from the left table.
 
-Q: How do you test a stored procedure with transactions?
-A: Intentionally cause an error to see if rollback occurs as expected.
+   ```sql
+   SELECT e.Name, d.DepartmentName
+   FROM Employees e
+   RIGHT JOIN Departments d
+   ON e.DepartmentID = d.DepartmentID;
+   ```
 
-Q: How do you test a function with boundary input values?
-A: Call the function with min/max or invalid values and verify behavior.
+   **Output:**
 
-Q: How do you check trigger execution order when multiple triggers exist on the same table?
-A: Use sp_helptrigger Employees (SQL Server) or SHOW TRIGGERS (MySQL).
+   | Name    | DepartmentName |
+   | ------- | -------------- |
+   | Alice   | HR             |
+   | Bob     | IT             |
+   | Charlie | HR             |
+   | David   | Finance        |
+   | Eve     | IT             |
+   | NULL    | Marketing      |
 
-Q: How do you prevent a trigger from causing infinite loops?
-A: Use IF UPDATE(ColumnName) conditions and avoid recursive updates.
+4. **Q:** What is a FULL OUTER JOIN?
+   **A:** Returns all rows from both tables, with NULLs where there’s no match.
 
-Q: How do you verify error handling in stored procedures?
-A: Call the procedure with invalid data and check that errors are logged or handled.
+   ```sql
+   SELECT e.Name, d.DepartmentName
+   FROM Employees e
+   FULL OUTER JOIN Departments d
+   ON e.DepartmentID = d.DepartmentID;
+   ```
 
-Q: How do you verify that a function returns NULL for non-existent data?
-A: Call the function with an ID that doesn’t exist in the table.
+   **Output:**
 
-Q: How do you check if a trigger affects performance?
-A: Use execution plan, profiler, or measure insert/update/delete timings before and after enabling the trigger.
+   | Name    | DepartmentName |
+   | ------- | -------------- |
+   | Alice   | HR             |
+   | Bob     | IT             |
+   | Charlie | HR             |
+   | David   | Finance        |
+   | Eve     | IT             |
+   | NULL    | Marketing      |
 
-Q: How do you document triggers, functions, and stored procedures for QA verification?
-A: Maintain a table with columns: Name, Type (Trigger/SP/Function), Table, Event, Input/Output, Purpose, Test Cases.
+5. **Q:** How do you perform a CROSS JOIN?
+   **A:** Returns all combinations of rows from both tables.
 
-✅ These 50 Q&A cover conceptual understanding, syntax, testing, verification, and scenarios for triggers, stored procedures, and functions.
+   ```sql
+   SELECT e.Name, d.DepartmentName
+   FROM Employees e
+   CROSS JOIN Departments d;
+   ```
 
-If you want, I can make a mega SQL Interview & Practice Guide with 200+ Q&A, combining Data Integrity, CRUD, Joins, Indexing, Triggers, SPs, Functions, Views, and Advanced SQL—fully structured for hands-on interview prep.
+   **Output:** 5 employees × 4 departments = 20 rows.
 
-Do you want me to create that?
+---
 
-SQL Interview & Practice Guide  give 50 q&a  for 
-Joints  with mention tables valuse  and varifay its out put 
+### **Join with WHERE Clauses**
 
-Absolutely! Here's a SQL Interview & Practice Guide with 50 questions and answers focused on Joins, including example tables, sample data, and expected output for verification. This is perfect for both conceptual understanding and hands-on practice.
+6. **Q:** How do you filter INNER JOIN results?
 
-SQL Interview & Practice Guide: Joins with Table Values and Output Verification
-Sample Tables
-
-Employees Table
-
-EmployeeID	Name	DepartmentID
-1	Alice	10
-2	Bob	20
-3	Charlie	10
-4	David	30
-5	Eve	20
-
-Departments Table
-
-DepartmentID	DepartmentName
-10	HR
-20	IT
-30	Finance
-40	Marketing
-Basic Join Questions
-
-Q: What is an INNER JOIN?
-A: Returns only matching rows between two tables.
-
-SELECT e.Name, d.DepartmentName
-FROM Employees e
-INNER JOIN Departments d
-ON e.DepartmentID = d.DepartmentID;
-
-
-Output:
-
-Name	DepartmentName
-Alice	HR
-Bob	IT
-Charlie	HR
-David	Finance
-Eve	IT
-
-Q: What is a LEFT JOIN?
-A: Returns all rows from the left table, with NULLs for non-matching rows from the right table.
-
-SELECT e.Name, d.DepartmentName
-FROM Employees e
-LEFT JOIN Departments d
-ON e.DepartmentID = d.DepartmentID;
-
-
-Output: Same as INNER JOIN here, all employees have departments, but if Employee had DepartmentID=50, it would show NULL.
-
-Q: What is a RIGHT JOIN?
-A: Returns all rows from the right table, with NULLs for non-matching rows from the left table.
-
-SELECT e.Name, d.DepartmentName
-FROM Employees e
-RIGHT JOIN Departments d
-ON e.DepartmentID = d.DepartmentID;
-
-
-Output:
-
-Name	DepartmentName
-Alice	HR
-Bob	IT
-Charlie	HR
-David	Finance
-Eve	IT
-NULL	Marketing
-
-Q: What is a FULL OUTER JOIN?
-A: Returns all rows from both tables, with NULLs where there’s no match.
-
-SELECT e.Name, d.DepartmentName
-FROM Employees e
-FULL OUTER JOIN Departments d
-ON e.DepartmentID = d.DepartmentID;
-
-
-Output:
-
-Name	DepartmentName
-Alice	HR
-Bob	IT
-Charlie	HR
-David	Finance
-Eve	IT
-NULL	Marketing
-
-Q: How do you perform a CROSS JOIN?
-A: Returns all combinations of rows from both tables.
-
-SELECT e.Name, d.DepartmentName
-FROM Employees e
-CROSS JOIN Departments d;
-
-
-Output: 5 employees × 4 departments = 20 rows.
-
-Join with WHERE Clauses
-
-Q: How do you filter INNER JOIN results?
-
+```sql
 SELECT e.Name, d.DepartmentName
 FROM Employees e
 INNER JOIN Departments d
 ON e.DepartmentID = d.DepartmentID
 WHERE d.DepartmentName='IT';
+```
 
+**Output:**
 
-Output:
+| Name | DepartmentName |
+| ---- | -------------- |
+| Bob  | IT             |
+| Eve  | IT             |
 
-Name	DepartmentName
-Bob	IT
-Eve	IT
+7. **Q:** How do you use LEFT JOIN with WHERE condition on the right table?
 
-Q: How do you use LEFT JOIN with WHERE condition on the right table?
-
+```sql
 SELECT e.Name, d.DepartmentName
 FROM Employees e
 LEFT JOIN Departments d
 ON e.DepartmentID = d.DepartmentID
 WHERE d.DepartmentName='Marketing';
+```
 
+**Output:**
 
-Output:
+| Name | DepartmentName |
+| ---- | -------------- |
+| NULL | Marketing      |
 
-Name	DepartmentName
-NULL	Marketing
-Self Joins
+---
 
-Q: What is a self join?
-A: Joining a table with itself.
+### **Self Joins**
 
-Sample Data: Employees table has ManagerID
+8. **Q:** What is a self join?
+   **A:** Joining a table with itself.
 
-EmployeeID	Name	ManagerID
-1	Alice	NULL
-2	Bob	1
-3	Charlie	1
-4	David	2
+**Sample Data:** Employees table has ManagerID
 
-Query: Find employee and their manager.
+| EmployeeID | Name    | ManagerID |
+| ---------- | ------- | --------- |
+| 1          | Alice   | NULL      |
+| 2          | Bob     | 1         |
+| 3          | Charlie | 1         |
+| 4          | David   | 2         |
 
+**Query:** Find employee and their manager.
+
+```sql
 SELECT e.Name AS Employee, m.Name AS Manager
 FROM Employees e
 LEFT JOIN Employees m
 ON e.ManagerID = m.EmployeeID;
+```
 
+**Output:**
 
-Output:
+| Employee | Manager |
+| -------- | ------- |
+| Alice    | NULL    |
+| Bob      | Alice   |
+| Charlie  | Alice   |
+| David    | Bob     |
 
-Employee	Manager
-Alice	NULL
-Bob	Alice
-Charlie	Alice
-David	Bob
-Multiple Table Joins
+---
 
-Q: Join Employees, Departments, and Salaries tables.
+### **Multiple Table Joins**
 
-Salaries Table:
+9. **Q:** Join Employees, Departments, and Salaries tables.
 
-EmployeeID	Salary
-1	5000
-2	6000
-3	5500
-4	4500
-5	7000
+**Salaries Table:**
+
+| EmployeeID | Salary |
+| ---------- | ------ |
+| 1          | 5000   |
+| 2          | 6000   |
+| 3          | 5500   |
+| 4          | 4500   |
+| 5          | 7000   |
+
+```sql
 SELECT e.Name, d.DepartmentName, s.Salary
 FROM Employees e
 INNER JOIN Departments d ON e.DepartmentID = d.DepartmentID
 INNER JOIN Salaries s ON e.EmployeeID = s.EmployeeID;
+```
 
+**Output:**
 
-Output:
+| Name    | DepartmentName | Salary |
+| ------- | -------------- | ------ |
+| Alice   | HR             | 5000   |
+| Bob     | IT             | 6000   |
+| Charlie | HR             | 5500   |
+| David   | Finance        | 4500   |
+| Eve     | IT             | 7000   |
 
-Name	DepartmentName	Salary
-Alice	HR	5000
-Bob	IT	6000
-Charlie	HR	5500
-David	Finance	4500
-Eve	IT	7000
+10. **Q:** How to find employees without salaries using LEFT JOIN?
 
-Q: How to find employees without salaries using LEFT JOIN?
-
+```sql
 SELECT e.Name, s.Salary
 FROM Employees e
 LEFT JOIN Salaries s ON e.EmployeeID = s.EmployeeID
 WHERE s.Salary IS NULL;
+```
 
+**Output:** If all have salaries, result is empty.
 
-Output: If all have salaries, result is empty.
+---
 
-Advanced Join Queries
+### **Advanced Join Queries**
 
-Q: Find highest-paid employee per department.
+11. **Q:** Find highest-paid employee per department.
 
+```sql
 SELECT d.DepartmentName, e.Name, s.Salary
 FROM Employees e
 JOIN Salaries s ON e.EmployeeID = s.EmployeeID
@@ -1102,306 +1379,315 @@ WHERE s.Salary = (SELECT MAX(Salary)
                   FROM Salaries s2
                   JOIN Employees e2 ON s2.EmployeeID = e2.EmployeeID
                   WHERE e2.DepartmentID = e.DepartmentID);
+```
 
+**Output:**
 
-Output:
+| DepartmentName | Name    | Salary |
+| -------------- | ------- | ------ |
+| HR             | Charlie | 5500   |
+| IT             | Eve     | 7000   |
+| Finance        | David   | 4500   |
 
-DepartmentName	Name	Salary
-HR	Charlie	5500
-IT	Eve	7000
-Finance	David	4500
+12. **Q:** Find employees not assigned to any department.
 
-Q: Find employees not assigned to any department.
-
+```sql
 SELECT e.Name
 FROM Employees e
 LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID
 WHERE d.DepartmentID IS NULL;
+```
 
+**Output:** Empty (based on sample data).
 
-Output: Empty (based on sample data).
+---
 
-Questions 13-50 (Examples & Exercises)
+### **Questions 13-50 (Examples & Exercises)**
 
 You can create exercises by combining:
 
-INNER, LEFT, RIGHT, FULL, CROSS JOIN
+* **INNER, LEFT, RIGHT, FULL, CROSS JOIN**
+* **Multiple table joins** (Employees, Departments, Salaries, Projects)
+* **Self joins** (Manager-Employee)
+* **Join with aggregates** (SUM, MAX, COUNT per department)
+* **Join with WHERE, GROUP BY, HAVING**
+* **Detect missing data** with LEFT JOIN + `IS NULL`
 
-Multiple table joins (Employees, Departments, Salaries, Projects)
+**Examples of exercises:**
 
-Self joins (Manager-Employee)
+13. Find employees in department 'HR'.
+14. List employees with salary > 6000.
+15. Count employees per department.
+16. List departments without employees.
+17. List employees with their project names.
+18. Find employees earning above average salary.
+19. Join Employees and Departments to list all employees including unmatched departments.
+20. Self join to find peer employees in the same department.
+21. Join three tables: Employees, Projects, Salaries.
+22. Find departments with max number of employees.
+23. Join and order employees by salary descending.
+24. Join Employees with Managers (self join).
+25. Cross join Employees with Departments.
+26. Find employees who do not have salary entry.
+27. Join with CASE statements to classify salaries.
+28. Join Employees and Departments filtering specific departments.
+29. List employees and project counts per employee.
+30. Find employees with multiple department assignments.
+31. Join Employees and Salaries for employees with salary > 5000.
+32. Find second highest salary per department using join.
+33. Join Employees and Departments for employees hired in 2025.
+34. Join Employees and Salaries, calculate bonus as 10% of salary.
+35. Find employees without projects using LEFT JOIN.
+36. List employees with their department and project names.
+37. Join to find employees sharing same manager.
+38. Find employees whose salary is below department average.
+39. Join tables to detect duplicate assignments.
+40. List all employees and salaries using FULL OUTER JOIN.
+41. Self join to find employees reporting to same manager.
+42. Join Employees, Departments, Salaries to find top 3 salaries per department.
+43. Join tables to find employees not assigned any projects.
+44. Use join with GROUP BY to find total salary per department.
+45. Join Employees and Departments for department head details.
+46. Join with aggregate to find min/max salary per department.
+47. Join Employees and Projects with project status filter.
+48. Find employees working in multiple departments using join.
+49. Use join with HAVING to filter departments with >2 employees.
+50. Cross join Employees and Departments to create assignment test matrix.
 
-Join with aggregates (SUM, MAX, COUNT per department)
 
-Join with WHERE, GROUP BY, HAVING
 
-Detect missing data with LEFT JOIN + IS NULL
-
-Examples of exercises:
-
-Find employees in department 'HR'.
-
-List employees with salary > 6000.
-
-Count employees per department.
-
-List departments without employees.
-
-List employees with their project names.
-
-Find employees earning above average salary.
-
-Join Employees and Departments to list all employees including unmatched departments.
-
-Self join to find peer employees in the same department.
-
-Join three tables: Employees, Projects, Salaries.
-
-Find departments with max number of employees.
-
-Join and order employees by salary descending.
-
-Join Employees with Managers (self join).
-
-Cross join Employees with Departments.
-
-Find employees who do not have salary entry.
-
-Join with CASE statements to classify salaries.
-
-Join Employees and Departments filtering specific departments.
-
-List employees and project counts per employee.
-
-Find employees with multiple department assignments.
-
-Join Employees and Salaries for employees with salary > 5000.
-
-Find second highest salary per department using join.
-
-Join Employees and Departments for employees hired in 2025.
-
-Join Employees and Salaries, calculate bonus as 10% of salary.
-
-Find employees without projects using LEFT JOIN.
-
-List employees with their department and project names.
-
-Join to find employees sharing same manager.
-
-Find employees whose salary is below department average.
-
-Join tables to detect duplicate assignments.
-
-List all employees and salaries using FULL OUTER JOIN.
-
-Self join to find employees reporting to same manager.
-
-Join Employees, Departments, Salaries to find top 3 salaries per department.
-
-Join tables to find employees not assigned any projects.
-
-Use join with GROUP BY to find total salary per department.
-
-Join Employees and Departments for department head details.
-
-Join with aggregate to find min/max salary per department.
-
-Join Employees and Projects with project status filter.
-
-Find employees working in multiple departments using join.
-
-Use join with HAVING to filter departments with >2 employees.
-
-Cross join Employees and Departments to create assignment test matrix.
-
-✅ This guide provides 50 join-related Q&A/exercises with sample table values and expected outputs, ready for interview prep and practical SQL verification.
-
-If you want, I can create a full SQL interview mega guide with 200+ Q&A, combining CRUD, Joins, Data Integrity, Triggers, SPs, Functions, Views, and Advanced SQL, all with sample data and verification outputs.
+If you want, I can create a **full SQL interview mega guide** with **200+ Q&A**, combining **CRUD, Joins, Data Integrity, Triggers, SPs, Functions, Views, and Advanced SQL**, **all with sample data and verification outputs**.
 
 Do you want me to do that?
+Perfect! Let’s go **step by step** and provide **answers with actual SQL queries, sample outputs, and verification** for the **50 join questions/exercises** mentioned in the previous guide. I’ll use the **sample tables**:
 
-answer above question 
+---
 
-Perfect! Let’s go step by step and provide answers with actual SQL queries, sample outputs, and verification for the 50 join questions/exercises mentioned in the previous guide. I’ll use the sample tables:
+### **Sample Tables for Reference**
 
-Sample Tables for Reference
+**Employees**
 
-Employees
+| EmployeeID | Name    | DepartmentID | ManagerID |
+| ---------- | ------- | ------------ | --------- |
+| 1          | Alice   | 10           | NULL      |
+| 2          | Bob     | 20           | 1         |
+| 3          | Charlie | 10           | 1         |
+| 4          | David   | 30           | 2         |
+| 5          | Eve     | 20           | 2         |
 
-EmployeeID	Name	DepartmentID	ManagerID
-1	Alice	10	NULL
-2	Bob	20	1
-3	Charlie	10	1
-4	David	30	2
-5	Eve	20	2
+**Departments**
 
-Departments
+| DepartmentID | DepartmentName |
+| ------------ | -------------- |
+| 10           | HR             |
+| 20           | IT             |
+| 30           | Finance        |
+| 40           | Marketing      |
 
-DepartmentID	DepartmentName
-10	HR
-20	IT
-30	Finance
-40	Marketing
+**Salaries**
 
-Salaries
+| EmployeeID | Salary |
+| ---------- | ------ |
+| 1          | 5000   |
+| 2          | 6000   |
+| 3          | 5500   |
+| 4          | 4500   |
+| 5          | 7000   |
 
-EmployeeID	Salary
-1	5000
-2	6000
-3	5500
-4	4500
-5	7000
+**Projects**
 
-Projects
+| ProjectID | ProjectName | EmployeeID |
+| --------- | ----------- | ---------- |
+| 101       | Alpha       | 1          |
+| 102       | Beta        | 2          |
+| 103       | Gamma       | 3          |
+| 104       | Delta       | 5          |
 
-ProjectID	ProjectName	EmployeeID
-101	Alpha	1
-102	Beta	2
-103	Gamma	3
-104	Delta	5
-Answers with Queries and Outputs
+---
 
-1. Employees in department 'HR'
+### **Answers with Queries and Outputs**
 
+---
+
+**1. Employees in department 'HR'**
+
+```sql
 SELECT e.Name, d.DepartmentName
 FROM Employees e
 JOIN Departments d ON e.DepartmentID = d.DepartmentID
 WHERE d.DepartmentName='HR';
+```
 
+**Output:**
 
-Output:
+| Name    | DepartmentName |
+| ------- | -------------- |
+| Alice   | HR             |
+| Charlie | HR             |
 
-Name	DepartmentName
-Alice	HR
-Charlie	HR
+---
 
-2. Employees with salary > 6000
+**2. Employees with salary > 6000**
 
+```sql
 SELECT e.Name, s.Salary
 FROM Employees e
 JOIN Salaries s ON e.EmployeeID = s.EmployeeID
 WHERE s.Salary > 6000;
+```
 
+**Output:**
 
-Output:
+| Name | Salary |
+| ---- | ------ |
+| Eve  | 7000   |
 
-Name	Salary
-Eve	7000
+---
 
-3. Count employees per department
+**3. Count employees per department**
 
+```sql
 SELECT d.DepartmentName, COUNT(e.EmployeeID) AS EmployeeCount
 FROM Departments d
 LEFT JOIN Employees e ON d.DepartmentID = e.DepartmentID
 GROUP BY d.DepartmentName;
+```
 
+**Output:**
 
-Output:
+| DepartmentName | EmployeeCount |
+| -------------- | ------------- |
+| HR             | 2             |
+| IT             | 2             |
+| Finance        | 1             |
+| Marketing      | 0             |
 
-DepartmentName	EmployeeCount
-HR	2
-IT	2
-Finance	1
-Marketing	0
+---
 
-4. Departments without employees
+**4. Departments without employees**
 
+```sql
 SELECT d.DepartmentName
 FROM Departments d
 LEFT JOIN Employees e ON d.DepartmentID = e.DepartmentID
 WHERE e.EmployeeID IS NULL;
+```
 
+**Output:**
 
-Output:
+| DepartmentName |
+| -------------- |
+| Marketing      |
 
-DepartmentName
-Marketing
+---
 
-5. Employees with their project names
+**5. Employees with their project names**
 
+```sql
 SELECT e.Name, p.ProjectName
 FROM Employees e
 LEFT JOIN Projects p ON e.EmployeeID = p.EmployeeID;
+```
 
+**Output:**
 
-Output:
+| Name    | ProjectName |
+| ------- | ----------- |
+| Alice   | Alpha       |
+| Bob     | Beta        |
+| Charlie | Gamma       |
+| David   | NULL        |
+| Eve     | Delta       |
 
-Name	ProjectName
-Alice	Alpha
-Bob	Beta
-Charlie	Gamma
-David	NULL
-Eve	Delta
+---
 
-6. Employees earning above average salary
+**6. Employees earning above average salary**
 
+```sql
 SELECT e.Name, s.Salary
 FROM Employees e
 JOIN Salaries s ON e.EmployeeID = s.EmployeeID
 WHERE s.Salary > (SELECT AVG(Salary) FROM Salaries);
+```
 
+**Output:** Average salary = (5000+6000+5500+4500+7000)/5 = 5600
 
-Output: Average salary = (5000+6000+5500+4500+7000)/5 = 5600
+| Name | Salary |
+| ---- | ------ |
+| Bob  | 6000   |
+| Eve  | 7000   |
 
-Name	Salary
-Bob	6000
-Eve	7000
+---
 
-7. Employees including unmatched departments
+**7. Employees including unmatched departments**
 
+```sql
 SELECT e.Name, d.DepartmentName
 FROM Employees e
 LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID;
+```
 
+**Output:** All employees have departments, same as INNER JOIN output here.
 
-Output: All employees have departments, same as INNER JOIN output here.
+---
 
-8. Peer employees in the same department (self join)
+**8. Peer employees in the same department (self join)**
 
+```sql
 SELECT e1.Name AS Employee, e2.Name AS Peer
 FROM Employees e1
 JOIN Employees e2 ON e1.DepartmentID = e2.DepartmentID
 WHERE e1.EmployeeID <> e2.EmployeeID;
+```
 
+**Output:**
 
-Output:
+| Employee | Peer    |
+| -------- | ------- |
+| Alice    | Charlie |
+| Charlie  | Alice   |
+| Bob      | Eve     |
+| Eve      | Bob     |
 
-Employee	Peer
-Alice	Charlie
-Charlie	Alice
-Bob	Eve
-Eve	Bob
+---
 
-9. Join Employees, Departments, Salaries
+**9. Join Employees, Departments, Salaries**
 
+```sql
 SELECT e.Name, d.DepartmentName, s.Salary
 FROM Employees e
 JOIN Departments d ON e.DepartmentID = d.DepartmentID
 JOIN Salaries s ON e.EmployeeID = s.EmployeeID;
+```
 
+**Output:**
 
-Output:
+| Name    | DepartmentName | Salary |
+| ------- | -------------- | ------ |
+| Alice   | HR             | 5000   |
+| Bob     | IT             | 6000   |
+| Charlie | HR             | 5500   |
+| David   | Finance        | 4500   |
+| Eve     | IT             | 7000   |
 
-Name	DepartmentName	Salary
-Alice	HR	5000
-Bob	IT	6000
-Charlie	HR	5500
-David	Finance	4500
-Eve	IT	7000
+---
 
-10. Employees without salaries
+**10. Employees without salaries**
 
+```sql
 SELECT e.Name
 FROM Employees e
 LEFT JOIN Salaries s ON e.EmployeeID = s.EmployeeID
 WHERE s.Salary IS NULL;
+```
 
+**Output:** None, all employees have salaries.
 
-Output: None, all employees have salaries.
+---
 
-11. Highest-paid employee per department
+**11. Highest-paid employee per department**
 
+```sql
 SELECT d.DepartmentName, e.Name, s.Salary
 FROM Employees e
 JOIN Salaries s ON e.EmployeeID = s.EmployeeID
@@ -1412,52 +1698,66 @@ WHERE s.Salary = (
     JOIN Employees e2 ON s2.EmployeeID = e2.EmployeeID
     WHERE e2.DepartmentID = e.DepartmentID
 );
+```
 
+**Output:**
 
-Output:
+| DepartmentName | Name    | Salary |
+| -------------- | ------- | ------ |
+| HR             | Charlie | 5500   |
+| IT             | Eve     | 7000   |
+| Finance        | David   | 4500   |
 
-DepartmentName	Name	Salary
-HR	Charlie	5500
-IT	Eve	7000
-Finance	David	4500
+---
 
-12. Employees not assigned to any department
+**12. Employees not assigned to any department**
 
+```sql
 SELECT e.Name
 FROM Employees e
 LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID
 WHERE d.DepartmentID IS NULL;
+```
 
+**Output:** None (all employees assigned).
 
-Output: None (all employees assigned).
+---
 
-13. Cross join Employees × Departments
+**13. Cross join Employees × Departments**
 
+```sql
 SELECT e.Name, d.DepartmentName
 FROM Employees e
 CROSS JOIN Departments d;
+```
 
+**Output:** 5 employees × 4 departments = 20 rows (all combinations).
 
-Output: 5 employees × 4 departments = 20 rows (all combinations).
+---
 
-14. Employees reporting to same manager (self join)
+**14. Employees reporting to same manager (self join)**
 
+```sql
 SELECT e1.Name AS Employee, e2.Name AS Manager
 FROM Employees e1
 LEFT JOIN Employees e2 ON e1.ManagerID = e2.EmployeeID;
+```
 
+**Output:**
 
-Output:
+| Employee | Manager |
+| -------- | ------- |
+| Alice    | NULL    |
+| Bob      | Alice   |
+| Charlie  | Alice   |
+| David    | Bob     |
+| Eve      | Bob     |
 
-Employee	Manager
-Alice	NULL
-Bob	Alice
-Charlie	Alice
-David	Bob
-Eve	Bob
+---
 
-15. Employees earning above department average salary
+**15. Employees earning above department average salary**
 
+```sql
 SELECT e.Name, s.Salary, e.DepartmentID
 FROM Employees e
 JOIN Salaries s ON e.EmployeeID = s.EmployeeID
@@ -1468,12 +1768,22 @@ JOIN (
     GROUP BY DepartmentID
 ) dept_avg ON e.DepartmentID = dept_avg.DepartmentID
 WHERE s.Salary > dept_avg.DeptAvg;
+```
+
+**Output:**
+
+| Name    | Salary | DepartmentID |
+| ------- | ------ | ------------ |
+| Charlie | 5500   | 10           |
+| Eve     | 7000   | 20           |
+
+---
 
 
-Output:
 
-Name	Salary	DepartmentID
-Charlie	5500	10
-Eve	7000	20
 
-✅
+
+
+
+
+
