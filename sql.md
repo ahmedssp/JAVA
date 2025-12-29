@@ -1134,6 +1134,173 @@ SELECT DISTINCT Department FROM Employees;
 ✅ This guide provides **50 join-related Q&A/exercises** with **sample table values and expected outputs**, ready for **interview prep and practical SQL verification**.
 
 ---
+Great interview question 👍
+I’ll show you **sample tables**, then **each join type**, and **the exact output difference** so it’s very clear.
+
+---
+
+## 📋 Sample Tables
+
+### **Employees**
+
+| EmpID | EmpName | DeptID |
+| ----- | ------- | ------ |
+| 1     | Ahmed   | 10     |
+| 2     | Sara    | 20     |
+| 3     | John    | 30     |
+| 4     | Mona    | NULL   |
+
+---
+
+### **Departments**
+
+| DeptID | DeptName |
+| ------ | -------- |
+| 10     | HR       |
+| 20     | IT       |
+| 40     | Finance  |
+
+---
+
+## 1️⃣ INNER JOIN
+
+👉 Returns **only matching rows** from both tables.
+
+```sql
+SELECT e.EmpName, d.DeptName
+FROM Employees e
+INNER JOIN Departments d
+ON e.DeptID = d.DeptID;
+```
+
+### Result:
+
+| EmpName | DeptName |
+| ------- | -------- |
+| Ahmed   | HR       |
+| Sara    | IT       |
+
+❌ John (DeptID 30 not in Departments)
+❌ Mona (NULL DeptID)
+
+---
+
+## 2️⃣ LEFT JOIN (LEFT OUTER JOIN)
+
+👉 Returns **all rows from LEFT table (Employees)** + matching rows from right table.
+
+```sql
+SELECT e.EmpName, d.DeptName
+FROM Employees e
+LEFT JOIN Departments d
+ON e.DeptID = d.DeptID;
+```
+
+### Result:
+
+| EmpName | DeptName |
+| ------- | -------- |
+| Ahmed   | HR       |
+| Sara    | IT       |
+| John    | NULL     |
+| Mona    | NULL     |
+
+✔ All employees returned
+✔ Missing department shows `NULL`
+
+---
+
+## 3️⃣ RIGHT JOIN (RIGHT OUTER JOIN)
+
+👉 Returns **all rows from RIGHT table (Departments)** + matching rows from left table.
+
+```sql
+SELECT e.EmpName, d.DeptName
+FROM Employees e
+RIGHT JOIN Departments d
+ON e.DeptID = d.DeptID;
+```
+
+### Result:
+
+| EmpName | DeptName |
+| ------- | -------- |
+| Ahmed   | HR       |
+| Sara    | IT       |
+| NULL    | Finance  |
+
+✔ All departments returned
+✔ Finance has no employees → `NULL`
+
+---
+
+## 4️⃣ FULL OUTER JOIN
+
+👉 Returns **all rows from both tables**, matched where possible.
+
+```sql
+SELECT e.EmpName, d.DeptName
+FROM Employees e
+FULL OUTER JOIN Departments d
+ON e.DeptID = d.DeptID;
+```
+
+### Result:
+
+| EmpName | DeptName |
+| ------- | -------- |
+| Ahmed   | HR       |
+| Sara    | IT       |
+| John    | NULL     |
+| Mona    | NULL     |
+| NULL    | Finance  |
+
+✔ Shows **everything**
+✔ Unmatched rows filled with `NULL`
+
+---
+
+## 5️⃣ SELF JOIN
+
+👉 Join a table **with itself**
+Example: Employees & their Managers
+
+### Employees Table (example)
+
+| EmpID | EmpName | ManagerID |
+| ----- | ------- | --------- |
+| 1     | Ahmed   | NULL      |
+| 2     | Sara    | 1         |
+| 3     | John    | 1         |
+
+```sql
+SELECT e.EmpName AS Employee, m.EmpName AS Manager
+FROM Employees e
+LEFT JOIN Employees m
+ON e.ManagerID = m.EmpID;
+```
+
+### Result:
+
+| Employee | Manager |
+| -------- | ------- |
+| Ahmed    | NULL    |
+| Sara     | Ahmed   |
+| John     | Ahmed   |
+
+---
+
+## 🧠 Interview Summary (VERY IMPORTANT)
+
+| Join Type  | Returns                   |
+| ---------- | ------------------------- |
+| INNER JOIN | Only matching rows        |
+| LEFT JOIN  | All left table rows       |
+| RIGHT JOIN | All right table rows      |
+| FULL JOIN  | All rows from both tables |
+| SELF JOIN  | Table joined to itself    |
+
+---
 
 ---
 
