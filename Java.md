@@ -77,6 +77,113 @@ public class Test {
         System.out.println(add(2, 3)); //5
     }
 }
+
+Good observation 👍 — the **output looks the same**, but what’s different is **what happens in memory**.
+Let me **show you clearly**, step by step.
+
+---
+
+## 1️⃣ Using **String** (immutable)
+
+### Code
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        String s = "A";
+        System.out.println("s = " + s);
+        System.out.println("reference = " + System.identityHashCode(s));
+
+        s = s + "B";
+        System.out.println("s = " + s);
+        System.out.println("reference = " + System.identityHashCode(s));
+
+        s = s + "C";
+        System.out.println("s = " + s);
+        System.out.println("reference = " + System.identityHashCode(s));
+    }
+}
+```
+
+### Sample Output (numbers will differ on your system)
+
+```
+s = A
+reference = 366712642
+s = AB
+reference = 1829164700
+s = ABC
+reference = 2018699554
+```
+
+🔴 **Notice:**
+Each time the value changes, the **reference number changes** → **new String object created**.
+
+---
+
+## 2️⃣ Using **StringBuilder** (mutable)
+
+### Code
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        StringBuilder sb = new StringBuilder("A");
+        System.out.println("sb = " + sb);
+        System.out.println("reference = " + System.identityHashCode(sb));
+
+        sb.append("B");
+        System.out.println("sb = " + sb);
+        System.out.println("reference = " + System.identityHashCode(sb));
+
+        sb.append("C");
+        System.out.println("sb = " + sb);
+        System.out.println("reference = " + System.identityHashCode(sb));
+    }
+}
+```
+
+### Sample Output
+
+```
+sb = A
+reference = 366712642
+sb = AB
+reference = 366712642
+sb = ABC
+reference = 366712642
+```
+
+🟢 **Notice:**
+The **reference stays the same** → **same object modified**.
+
+---
+
+## Final Comparison (Easy to Remember)
+
+| Feature        | String        | StringBuilder |
+| -------------- | ------------- | ------------- |
+| Output         | Same          | Same          |
+| Object created | New each time | Only one      |
+| Reference      | Changes       | Same          |
+| Performance    | Slower        | Faster        |
+
+---
+
+### One-line conclusion 🧠
+
+> **Same output ≠ same memory behavior**
+
+If you want, I can now:
+
+* Draw a **memory diagram**
+* Show **StringBuffer** comparison
+* Give **output-based exam questions**
+
+Just tell me 👍
+
 ```
 👉 Question:
 What will be printed?
@@ -412,6 +519,7 @@ public class Test {
 ```
 
 🔥 Practice 7: String Immutability Trap
+```
 public class Test {
     public static void main(String[] args) {
         String s = "A";
