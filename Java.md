@@ -77,17 +77,14 @@ public class Test {
         System.out.println(add(2, 3)); //5
     }
 }
-
-Good observation 👍 — the **output looks the same**, but what’s different is **what happens in memory**.
-Let me **show you clearly**, step by step.
-
----
+```
 
 ## 1️⃣ Using **String** (immutable)
 
 ### Code
 
-```java
+```
+java
 public class Main {
     public static void main(String[] args) {
 
@@ -104,6 +101,7 @@ public class Main {
         System.out.println("reference = " + System.identityHashCode(s));
     }
 }
+
 ```
 
 ### Sample Output (numbers will differ on your system)
@@ -126,7 +124,8 @@ Each time the value changes, the **reference number changes** → **new String o
 
 ### Code
 
-```java
+```
+
 public class Main {
     public static void main(String[] args) {
 
@@ -159,10 +158,10 @@ reference = 366712642
 🟢 **Notice:**
 The **reference stays the same** → **same object modified**.
 
----
+
 
 ## Final Comparison (Easy to Remember)
-
+```
 | Feature        | String        | StringBuilder |
 | -------------- | ------------- | ------------- |
 | Output         | Same          | Same          |
@@ -170,7 +169,7 @@ The **reference stays the same** → **same object modified**.
 | Reference      | Changes       | Same          |
 | Performance    | Slower        | Faster        |
 
----
+```
 
 ### One-line conclusion 🧠
 
@@ -184,7 +183,7 @@ If you want, I can now:
 
 Just tell me 👍
 
-```
+
 👉 Question:
 What will be printed?
 
@@ -262,18 +261,6 @@ public class Test {
     }
 }
 ```
-👉 Question:
-What is the output?
-
-
-
-👉 Start by answering Practice 1, and I’ll guide you step by step like a real interview.
-
-You said:
-yes
-ChatGPT said:
-Perfect 👍
-Let’s start step by step, just like in a real interview.
 
 ✅ Practice 1
 Look at this code carefully:
@@ -292,6 +279,7 @@ public class Test {
 We’ll train step-by-step on combined loops + String manipulations, exactly the kind of logic interviewers like.
 
 🔹 1. Important String Rules (Interview MUST-KNOW)
+```
 ✅ String is immutable
 String s = "Hi";
 s.concat("Java");
@@ -306,6 +294,8 @@ Output: A (index starts at 0)
 ✅ length()
 s.length(); // number of characters
 🔹 2. Combined Loop + String (Basic)
+
+```
 Practice 1
 ```
 public class Test {
@@ -440,6 +430,7 @@ System.out.println(out);
 }
 ```
 out: OLL
+
 ```
 public class Test {
     public static void main(String[] args) {
@@ -516,6 +507,7 @@ public class Test {
 
     }
 }
+
 ```
 
 🔥 Practice 7: String Immutability Trap
@@ -528,15 +520,17 @@ public class Test {
             s.concat(String.valueOf(i));
         }
 
-        System.out.println(s);
+        System.out.println(s);//A
     }
 }
+```
+Practice
 ```
 public class Test {
     public static void main(String[] args) {
         String s = "JAVA";
         StringBuilder sb = new StringBuilder();
-        for (int i = s.length() - 1; i >= 0; i--) for(i=3; i>=0;1--) (3,2,1,0)
+        for (int i = s.length() - 1; i >= 0; i--) //for(i=3; i>=0;1--) (3,2,1,0)
         {
             if (i % 2 == 0) sb.append(s.charAt(i));
         }
@@ -713,6 +707,7 @@ These cover core OOP pillars: encapsulation, inheritance, polymorphism, abstract
 👉 Do NOT run the code — trace it like in an interview.
 
 🔥 1. Constructor + Inheritance Order
+```
 class A {
     A() {
         System.out.print("A ");
@@ -730,9 +725,11 @@ public class Test {
         new B();
     }
 }
-Question: What is the output?
+```
+Question:A B 
 
-🔥 2. Method Overriding (Runtime Polymorphism)
+  2. Method Overriding (Runtime Polymorphism)
+```
 class A {
     void show() {
         System.out.print("A ");
@@ -748,12 +745,60 @@ class B extends A {
 public class Test {
     public static void main(String[] args) {
         A obj = new B();
-        obj.show();
+        obj.show(); //B
     }
 }
-Question: Output? Why?
+```
+### ✅ Output
+
+```
+B
+```
+
+---
+
+### ❓ Why is the output **B**?
+
+This is because of **Method Overriding** and **Runtime Polymorphism** in Java.
+
+---
+
+## Step-by-step explanation
+
+### 1️⃣ Object creation
+
+```java
+A ob = new B();
+```
+
+* **Reference type** → `A`
+* **Object type** → `B`
+
+So, the object created in memory is of **class B**.
+
+---
+
+### 2️⃣ Method call
+
+```java
+ob.show();
+```
+
+Java checks **which version of `show()` to call at runtime**, not at compile time.
+
+* Class `B` **overrides** the `show()` method of class `A`
+* The **object type (B)** decides which method runs
+
+👉 Therefore, `B`’s `show()` is called.
+
+
+## Key Concept: Runtime Polymorphism
+
+> **Method call depends on object type, not reference type**
+
 
 🔥 3. Method Overloading vs Overriding
+```
 class A {
     void print(int x) {
         System.out.print("A ");
@@ -769,12 +814,14 @@ class B extends A {
 public class Test {
     public static void main(String[] args) {
         A obj = new B();
-        obj.print(10);
+        obj.print(10); //A
     }
 }
-Question: Output?
+```
+note :   B obj = new A(); give error 
 
 🔥 4. static Method Hiding (VERY IMPORTANT)
+```
 class A {
     static void show() {
         System.out.print("A ");
@@ -790,12 +837,15 @@ class B extends A {
 public class Test {
     public static void main(String[] args) {
         A obj = new B();
-        obj.show();
+        obj.show(); //A
+        B.show(); //B
+        A.show(); //A
     }
 }
-Question: Output? (Many candidates fail this)
+```
 
 🔥 5. Instance Variable Hiding
+```
 class A {
     int x = 10;
 }
@@ -807,12 +857,16 @@ class B extends A {
 public class Test {
     public static void main(String[] args) {
         A obj = new B();
-        System.out.println(obj.x);
+        System.out.println(obj.x); //10
     }
 }
-Question: Output? Why?
+```
 
 🔥 6. final Method Behavior
+
+
+```
+
 class A {
     final void show() {
         System.out.print("A ");
@@ -820,16 +874,55 @@ class A {
 }
 
 class B extends A {
-    // void show() { }  // uncomment?
+     void show() {
+         System.out.print("B ");
+     }  // uncomment?
 }
 
-public class Test {
+public class Main {
     public static void main(String[] args) {
         new B().show();
     }
 }
-Question: Output?
+```
+
+---
+
+### Key points:
+
+1. **`final` methods in Java:**
+
+   * If a method is declared `final` in a superclass, **it cannot be overridden** in a subclass.
+   * In your code, `A.show()` is `final`.
+
+2. **What happens if you uncomment `B.show()`:**
+
+   * The compiler will throw an error:
+
+     ```
+     error: show() in B cannot override show() in A
+     overridden method is final
+     ```
+
+3. **If you leave `B.show()` commented:**
+
+   * `B` inherits `A`’s `show()` method.
+   * So, `new B().show();` will print:
+
+     ```
+     A 
+     ```
+
+---
+
+✅ **Conclusion:**
+You **cannot** uncomment `B.show()` because `show()` is `final` in `A`. Java will prevent you from overriding it.
+
+---
+END*
 Follow-up: What happens if we uncomment show() in B?
+
+```
 
 🔥 7. Constructor + this Keyword
 class Test {
