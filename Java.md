@@ -922,11 +922,11 @@ You **cannot** uncomment `B.show()` because `show()` is `final` in `A`. Java wil
 END*
 Follow-up: What happens if we uncomment show() in B?
 
-```
 
 🔥 7. Constructor + this Keyword
+```
 class Test {
-    int x;
+    int x=9;
 
     Test(int x) {
         this.x = x;
@@ -934,12 +934,13 @@ class Test {
 
     public static void main(String[] args) {
         Test t = new Test(5);
-        System.out.println(t.x);
+        System.out.println(t.x); //5
     }
 }
-Question: Output?
+```
 
 🔥 8. Interface Method Call
+```
 interface A {
     void show();
 }
@@ -956,9 +957,11 @@ public class Test {
         obj.show();
     }
 }
+```
 Question: Output?
 
 🔥 9. Abstract Class Constructor
+```
 abstract class A {
     A() {
         System.out.print("A ");
@@ -976,8 +979,9 @@ public class Test {
         new B();
     }
 }
+```
 Question: Output?
-
+```
 🔥 10. Downcasting (Tricky)
 class A {
     void show() {
@@ -998,7 +1002,9 @@ public class Test {
         b.show();
     }
 }
+```
 Question: Output?
+```
 
 🔥 11. super Keyword
 class A {
@@ -1018,7 +1024,9 @@ public class Test {
         new B().show();
     }
 }
+```
 Question: Output?
+```
 
 🔥 12. Object Creation Count (INTERVIEW FAVORITE)
 class Test {
