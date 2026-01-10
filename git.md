@@ -84,7 +84,8 @@ A---B   ← main (HEAD)
 ```
 
 Nothing saved until committed.
-#example
+
+# example
 ```
 PS C:\Users\A-Abdelsalam\Desktop\New folder> git branch
 * main
