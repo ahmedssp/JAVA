@@ -84,6 +84,324 @@ A---B   ← main (HEAD)
 ```
 
 Nothing saved until committed.
+#example
+```
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git branch
+* main
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git checkout -b feature
+Switched to a new branch 'feature'
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git branch
+* feature
+  main
+PS C:\Users\A-Abdelsalam\Desktop\New folder> echo "test file *_*" >filet.text
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff main...feature
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git add filet.text
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff main...feature
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git commit -m "diff"
+[feature c7d5dcb] diff
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 filet.text
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff main...feature
+diff --git a/filet.text b/filet.text
+new file mode 100644
+index 0000000..68f0953
+Binary files /dev/null and b/filet.text differ
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git push -u origin feature
+Enumerating objects: 90, done.
+Counting objects: 100% (90/90), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (87/87), done.
+error: RPC failed; curl 55 Send failure: Connection was reset
+send-pack: unexpected disconnect while reading sideband packet
+Writing objects: 100% (90/90), 93.75 MiB | 866.00 KiB/s, done.
+Total 90 (delta 32), reused 0 (delta 0), pack-reused 0 (from 0)
+fatal: the remote end hung up unexpectedly
+Everything up-to-date
+git config http.postBuffer 524288000
+git push -u origin feature
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff main...feature
+diff --git a/filet.text b/filet.text
+new file mode 100644
+index 0000000..68f0953
+Binary files /dev/null and b/filet.text differ
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log main..feature --oneline
+c7d5dcb (HEAD -> feature) diff
+```
+I’ll explain **step by step**, in **simple words**, exactly **what each command means** and **what is happening** 👇
+(Perfect for understanding + interview confidence)
+
+---
+
+## 1️⃣ `git branch`
+
+```bash
+* main
+```
+
+**Meaning:**
+
+* You have **one branch** called `main`
+* `*` means **you are currently on `main`**
+
+---
+
+## 2️⃣ `git checkout -b feature`
+
+```bash
+Switched to a new branch 'feature'
+```
+
+**Meaning:**
+
+* Git **created a new branch** named `feature`
+* Git **switched to it immediately**
+* `feature` is copied from the current branch (`main`)
+
+---
+
+## 3️⃣ `git branch`
+
+```bash
+* feature
+  main
+```
+
+**Meaning:**
+
+* You are now **working on `feature`**
+* `main` still exists but is not active
+
+---
+
+## 4️⃣ Create a file
+
+```bash
+echo "test file *_*" >filet.text
+```
+
+**Meaning:**
+
+* Creates a new file called `filet.text`
+* Adds text inside it
+* File exists **only in `feature` branch**
+
+---
+
+## 5️⃣ `git diff main...feature` (before staging)
+
+```bash
+(no output)
+```
+
+**Meaning:**
+
+* Git compares `main` and `feature`
+* **No committed differences yet**
+* Your file is **untracked**, so Git doesn’t show it
+
+👉 This is **normal behavior**
+
+---
+
+## 6️⃣ `git add filet.text`
+
+**Meaning:**
+
+* File is now **staged**
+* Ready to be committed
+
+---
+
+## 7️⃣ `git diff main...feature` (after staging)
+
+```bash
+(no output)
+```
+
+**Meaning:**
+
+* Still **no committed difference**
+* `git diff main...feature` only shows **committed changes**
+
+---
+
+## 8️⃣ `git commit -m "diff"`
+
+```bash
+1 file changed, 0 insertions(+), 0 deletions(-)
+create mode 100644 filet.text
+```
+
+**Meaning:**
+
+* File is now **committed** in `feature`
+* `main` does NOT have this file
+* `0 insertions` happens because Git treated it as **binary** (we’ll explain why)
+
+---
+
+## 9️⃣ `git diff main...feature` (after commit)
+
+```diff
+new file mode 100644
+Binary files /dev/null and b/filet.text differ
+```
+
+**Meaning:**
+
+* `filet.text` exists in `feature`
+* It does NOT exist in `main`
+* Git thinks it’s a **binary file**, so it can’t show line-by-line diff
+
+👉 This usually happens because:
+
+* File encoding
+* File extension typo (`.text` instead of `.txt`)
+* Non-text characters
+
+---
+
+## 🔧 Fix (optional but recommended)
+
+Rename file:
+
+```bash
+mv filet.text filet.txt
+git add filet.txt
+git commit -m "rename to txt"
+```
+
+---
+
+## 🔟 `git push -u origin feature` (ERROR explained)
+
+```bash
+error: RPC failed; curl 55 Send failure
+```
+
+**Meaning:**
+
+* Git was pushing a **large pack (~94 MB)**
+* Connection was interrupted
+* Push actually **completed**, but Git lost connection
+
+This line confirms it:
+
+```bash
+Everything up-to-date
+```
+
+So 👉 **Your branch is already pushed successfully**
+
+---
+
+## 🔁 `git config http.postBuffer 524288000`
+
+**Meaning:**
+
+* Increases Git buffer size
+* Helps with large pushes
+* Safe command
+
+---
+
+## 🔁 Second push
+
+```bash
+git push -u origin feature
+```
+
+**Meaning:**
+
+* Nothing to push
+* Already synced
+
+---
+
+## Final `git diff main...feature`
+
+```diff
+Binary files /dev/null and b/filet.text differ
+```
+
+**Meaning:**
+
+* `feature` still has a file that `main` doesn’t
+* Branches are **different**
+* This is expected until you **merge feature → main**
+
+---
+Ah! You want to see the **differences between `main` and `feature` on the remote repository**, not just your local branches. Let me explain **how to do that step by step**.
+
+---
+
+### **Step 1: Make sure your remote branches are up-to-date**
+
+```bash
+git fetch origin
+```
+
+* This **updates your local Git with the latest branches and commits** from the remote (`origin`).
+* After this, you can see remote branches with:
+
+```bash
+git branch -r
+```
+
+* Example output:
+
+```
+  origin/main
+  origin/feature
+```
+
+---
+
+### **Step 2: Compare remote `main` and `feature`**
+
+You have two options:
+
+#### **Option A: Use `git diff`**
+
+```bash
+git diff origin/main...origin/feature
+```
+
+* Shows the **file-level differences between the remote branches**.
+* Three dots `...` compare **feature’s tip to the merge base with main** (PR-style diff).
+
+#### **Option B: See commit-level differences**
+
+```bash
+git log origin/main..origin/feature --oneline
+```
+
+* Shows **commits in `feature` that are not in `main`** on the remote.
+
+---
+
+### **Step 3: Optional – compare a remote branch with your local branch**
+
+```bash
+git diff main..origin/feature
+```
+
+* Compare your local `main` with remote `feature`.
+* Useful if you haven’t pulled the remote branch yet.
+
+---
+
+### **Notes**
+
+* `origin/main` = the `main` branch on the remote.
+* `origin/feature` = the `feature` branch on the remote.
+* You **cannot `git diff feature` directly for a remote branch** unless you fetch it first.
+
+---
+
+If you want, I can give a **diagram showing `main` vs `feature` locally and remotely** and exactly what `git diff` is comparing — it makes this super clear for PR reviews.
+
+Do you want me to do that?
 
 ---
 
@@ -441,6 +759,39 @@ You’ll **type commands, observe graphs, and fix mistakes** — from **beginner
 > `git log --oneline --graph --all`
 
 ---
+Example 
+```
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log --oneline
+431b0da (HEAD -> main, origin/main) hi2
+f3e5221 hi
+c87474d Update Java.md
+3cdfebf Update Java.md
+74b603c Update Java.md
+f13e989 Update Java.md
+3f59ba1 first yghuiod2fghdscj
+96fa13e Create TestNG.md
+fc49b61 first commitwhghtydyts
+5570f4f first commitwhghgfg00tydyts
+8aef918 first commitwhghgfg00
+f3927e2 first commitwhg
+0ceddfc Update sql.md
+b318ea5 Rename README.md to Java.md
+6322fbc Update sql.md
+d2481a7 Create sql.md
+102394b Update README.md
+03bd7fe Update README.md
+6cec9b2 Update README.md
+d62ae1b Update README.md
+f03b7a2 Update Locators.md
+7127ba9 Update Locators.md
+b8c1710 Update Locators.md
+b12a974 Update Locators.md
+c10ae4e Update and rename README - Copy.md to Locators.md
+696fc2c first commitwde
+e9ce048 Create README.md
+6ff8368 first commitwd
+PS C:\Users\A-Abdelsalam\Desktop\New folder>
+```
 
 # 🧪 Git Hands-On Practice Lab
 
@@ -793,7 +1144,77 @@ git log --oneline --graph --all
 git status
 git reflog
 ```
+git log --oneline --graph --all
 
+```
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log --oneline --graph --all
+*   431b0da (HEAD -> main, origin/main) hi2
+|\
+| * c87474d Update Java.md
+| * 3cdfebf Update Java.md
+| * 74b603c Update Java.md
+| * f13e989 Update Java.md
+* | f3e5221 hi
+|/
+* 3f59ba1 first yghuiod2fghdscj
+* 96fa13e Create TestNG.md
+* fc49b61 first commitwhghtydyts
+* 5570f4f first commitwhghgfg00tydyts
+* 8aef918 first commitwhghgfg00
+* f3927e2 first commitwhg
+* 0ceddfc Update sql.md
+* b318ea5 Rename README.md to Java.md
+* 6322fbc Update sql.md
+* d2481a7 Create sql.md
+* 102394b Update README.md
+* 03bd7fe Update README.md
+* 6cec9b2 Update README.md
+* d62ae1b Update README.md
+* f03b7a2 Update Locators.md
+* 7127ba9 Update Locators.md
+* b8c1710 Update Locators.md
+* b12a974 Update Locators.md
+* c10ae4e Update and rename README - Copy.md to Locators.md
+* 696fc2c first commitwde
+* e9ce048 Create README.md
+* 6ff8368 first commitwd
+PS C:\Users\A-Abdelsalam\Desktop\New folder>
+```
+git status
+```
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+PS C:\Users\A-Abdelsalam\Desktop\New folder> echo "this is text" > fil1.text
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        fil1.text
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
+git reflog
+```
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git reflog
+431b0da (HEAD -> main, origin/main) HEAD@{0}: commit (merge): hi2
+f3e5221 HEAD@{1}: commit: hi
+3f59ba1 HEAD@{2}: commit: first yghuiod2fghdscj
+96fa13e HEAD@{3}: pull: Fast-forward
+fc49b61 HEAD@{4}: commit: first commitwhghtydyts
+5570f4f HEAD@{5}: commit: first commitwhghgfg00tydyts
+8aef918 HEAD@{6}: commit: first commitwhghgfg00
+f3927e2 HEAD@{7}: commit: first commitwhg
+0ceddfc HEAD@{8}: pull: Fast-forward
+696fc2c HEAD@{9}: commit: first commitwde
+e9ce048 HEAD@{10}: pull: Fast-forward
+6ff8368 HEAD@{11}: commit (initial): first commitwd
+PS C:\Users\A-Abdelsalam\Desktop\New folder>
+```
 ---
 Below is a **step-by-step, from simple to advanced** explanation of **Git Merge vs Git Rebase**, with **clear commit graphs** and **real-world guidance**.
 
@@ -1292,9 +1713,104 @@ A---B---C---F---G---X'---Y'
 * Remote branch is **unchanged** until you push.
 
 ---
+To **unstage files in Git** (remove them from the staging area but keep your changes), use:
+
+### ✅ Unstage a specific file
+
+```bash
+git restore --staged filename
+```
+
+### ✅ Unstage multiple files
+
+```bash
+git restore --staged file1 file2
+```
+
+### ✅ Unstage all staged files
+
+```bash
+git restore --staged .
+```
+
+---
+
+### 🔁 Older / still common command
+
+```bash
+git reset HEAD filename
+```
+
+### Unstage all (older style)
+
+```bash
+git reset HEAD .
+```
+
+To **uncommit files in Git** (undo a commit), the command depends on **what you want to keep**.
+
+---
+
+## 1️⃣ Undo last commit **but keep changes staged**
+
+```bash
+git reset --soft HEAD~1
+```
+
+✔ Commit removed
+✔ Files stay **staged**
+
+---
+
+## 2️⃣ Undo last commit **and unstage files (keep changes)**
+
+```bash
+git reset --mixed HEAD~1
+```
+
+or simply:
+
+```bash
+git reset HEAD~1
+```
+
+✔ Commit removed
+✔ Files stay in **working directory**
+
+---
+
+## 3️⃣ Undo last commit **and discard changes (DANGEROUS ⚠️)**
+
+```bash
+git reset --hard HEAD~1
+```
+
+❌ Commit removed
+❌ Changes lost permanently
+
+---
+
+## 4️⃣ Undo a specific commit (safe for shared branches)
+
+```bash
+git revert <commit_hash>
+```
+
+✔ Creates a new commit that reverses the changes
+✔ Safe if commit is already pushed
+
+---
+
+## 🔑 Interview one-line answer
+
+> “To uncommit files, I use `git reset` with `--soft`, `--mixed`, or `--hard` depending on whether I want to keep staged changes, working changes, or discard everything. If the commit is pushed, I use `git revert`.”
+
+If you want a **quick decision guide** or **real interview scenarios**, tell me 👍
 
 
-* 🧑‍💻 **GitHub / PR workflow**
+
+
+
 
 
 
