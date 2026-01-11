@@ -1770,7 +1770,6 @@ A---B---C---F---G---X'---Y'
 * Remote branch still unchanged until you push.
 ---
 ## **5️⃣ Merge vs Rebase Comparison**
-
 | Feature      | Merge                    | Rebase                            |
 | ------------ | ------------------------ | --------------------------------- |
 | History      | Non-linear, shows merges | Linear, rewritten                 |
@@ -1778,7 +1777,6 @@ A---B---C---F---G---X'---Y'
 | Safety       | Safe for shared branches | Rewrites history, risky if shared |
 | Simplicity   | Easy                     | Slightly advanced                 |
 | Use Case     | Combine finished feature | Keep feature updated cleanly      |
-
 ---
 ## **6️⃣ Advanced Graph: Merge vs Rebase vs Pull**
 **Branches before integration:**
@@ -1820,10 +1818,8 @@ A---B---C---F---G---M
 A---B---C---F---G---X'---Y'
 ```
 ✅ **Always remember:**
-
 * The **Result = your local branch after integration**.
 * Remote branch is **unchanged** until you push.
-
 ---
 To **unstage files in Git** (remove them from the staging area but keep your changes), use:
 
@@ -1832,89 +1828,126 @@ To **unstage files in Git** (remove them from the staging area but keep your cha
 ```bash
 git restore --staged filename
 ```
-
 ### ✅ Unstage multiple files
-
 ```bash
 git restore --staged file1 file2
 ```
-
 ### ✅ Unstage all staged files
-
 ```bash
 git restore --staged .
 ```
-
 ---
-
 ### 🔁 Older / still common command
-
 ```bash
 git reset HEAD filename
 ```
-
 ### Unstage all (older style)
-
 ```bash
 git reset HEAD .
 ```
-
 To **uncommit files in Git** (undo a commit), the command depends on **what you want to keep**.
-
 ---
-
 ## 1️⃣ Undo last commit **but keep changes staged**
-
 ```bash
 git reset --soft HEAD~1
 ```
-
 ✔ Commit removed
 ✔ Files stay **staged**
-
 ---
-
 ## 2️⃣ Undo last commit **and unstage files (keep changes)**
-
 ```bash
 git reset --mixed HEAD~1
 ```
-
 or simply:
-
 ```bash
 git reset HEAD~1
 ```
-
 ✔ Commit removed
 ✔ Files stay in **working directory**
-
 ---
-
 ## 3️⃣ Undo last commit **and discard changes (DANGEROUS ⚠️)**
-
 ```bash
 git reset --hard HEAD~1
 ```
-
 ❌ Commit removed
 ❌ Changes lost permanently
-
 ---
-
 ## 4️⃣ Undo a specific commit (safe for shared branches)
-
 ```bash
 git revert <commit_hash>
 ```
-
 ✔ Creates a new commit that reverses the changes
 ✔ Safe if commit is already pushed
+---
+## 🔑 Interview one-line answer
+> “To uncommit files, I use `git reset` with `--soft`, `--mixed`, or `--hard` depending on whether I want to keep staged changes, working changes, or discard everything. If the commit is pushed, I use `git revert`.”
+
+It looks like you’re asking **how to undo changes in Git** 👍
+Here’s a **clear cheat-sheet** based on *what you want to undo*.
 
 ---
 
-## 🔑 Interview one-line answer
+## 1️⃣ Undo changes in a file (not staged yet)
 
-> “To uncommit files, I use `git reset` with `--soft`, `--mixed`, or `--hard` depending on whether I want to keep staged changes, working changes, or discard everything. If the commit is pushed, I use `git revert`.”
+You edited a file but **didn’t run `git add`**:
 
-If you want a **quick decision guide** or **real interview scenarios**, tell me 👍
+```bash
+git checkout -- filename
+```
+
+👉 Reverts the file to the **last commit**.
+
+---
+## 2️⃣ Undo `git add` (unstage changes)
+You ran `git add` but **don’t want to commit yet**:
+```bash
+git restore --staged filename
+```
+(or old way)
+
+```bash
+git reset filename
+```
+
+👉 Keeps your changes, but removes them from staging.
+---
+## 3️⃣ Undo last commit (keep changes)
+
+You committed by mistake but want the code back:
+```bash
+git reset --soft HEAD~1
+```
+👉 Commit is removed, files stay staged.
+---
+## 4️⃣ Undo last commit (delete changes completely)
+⚠️ **Danger – this deletes work**
+```bash
+git reset --hard HEAD~1
+```
+👉 Commit and changes are **gone**.
+---
+## 5️⃣ Undo changes in all files (not staged)
+```bash
+git checkout .
+```
+or (modern)
+```bash
+git restore .
+```
+---
+## 6️⃣ Undo everything (reset branch to remote)
+⚠️ **Very dangerous**
+```bash
+git fetch origin
+git reset --hard origin/main
+```
+👉 Local branch becomes **exactly like remote**.
+---
+## 7️⃣ Undo a pushed commit (safe way)
+If you already pushed and want to undo safely:
+```bash
+git revert HEAD
+```
+👉 Creates a **new commit** that cancels the previous one.
+---
+
