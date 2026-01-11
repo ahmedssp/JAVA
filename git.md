@@ -2044,7 +2044,21 @@ git fetch origin feature → only one branch
 
 # Example 2:
 ```
- git log -1 --oneline
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git status
+On branch feature
+nothing to commit, working tree clean
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git branch -r
+  origin/main
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git branch
+* feature
+  main
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log -1
+commit c7d5dcb5b9d05a07de77f57860b90f5a621aad0a (HEAD -> feature)
+Author: Ahmed Mostafa Abd-ellsalame <62264791+ahmedssp@users.noreply.github.com>
+Date:   Sat Jan 10 02:41:30 2026 +0200
+
+    diff
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log -1 --oneline
 c7d5dcb (HEAD -> feature) diff
 PS C:\Users\A-Abdelsalam\Desktop\New folder> git show
 commit c7d5dcb5b9d05a07de77f57860b90f5a621aad0a (HEAD -> feature)
@@ -2106,174 +2120,335 @@ branch 'feature' set up to track 'origin/feature'.
 PS C:\Users\A-Abdelsalam\Desktop\New folder> git branch -r
   origin/feature
   origin/main
-PS C:\Users\A-Abdelsalam\Desktop\New folder>
-```
-# Explanation example 2
-Sure! Let’s carefully break down each of the Git commands you ran and the output you got, step by step, so you can understand exactly what’s happening in your repository.
-
----
-
-### **1. `git log -1 --oneline`**
-
-```bash
-git log -1 --oneline
-c7d5dcb (HEAD -> feature) diff
-```
-
-* `git log` shows commit history.
-* `-1` means **show only the latest commit**.
-* `--oneline` condenses each commit into a single line: **commit hash + commit message**.
-* Output:
-
-  * `c7d5dcb` → the short hash of your latest commit.
-  * `(HEAD -> feature)` → indicates **HEAD** (your current checked-out commit) is pointing to the `feature` branch.
-  * `diff` → the commit message.
-
----
-
-### **2. `git show`**
-
-```bash
-git show
-commit c7d5dcb5b9d05a07de77f57860b90f5a621aad0a (HEAD -> feature)
-Author: Ahmed Mostafa Abd-ellsalame <62264791+ahmedssp@users.noreply.github.com>
-Date:   Sat Jan 10 02:41:30 2026 +0200
-
-    diff
-
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff main...feature
 diff --git a/filet.text b/filet.text
 new file mode 100644
 index 0000000..68f0953
 Binary files /dev/null and b/filet.text differ
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git checkout main
+Switched to branch 'main'
+Your branch is behind 'origin/main' by 8 commits, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git branch
+  feature
+* main
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git pull origin main
+fatal: unable to access 'https://github.com/ahmedssp/JAVA/': Recv failure: Connection was reset
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git pull
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 2.83 KiB | 42.00 KiB/s, done.
+From https://github.com/ahmedssp/JAVA
+   18d09b0..442d297  main       -> origin/main
+Updating 431b0da..442d297
+Fast-forward
+ git.md | 2474 ++++++++++++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 1644 insertions(+), 830 deletions(-)
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff main...feature
+diff --git a/filet.text b/filet.text
+new file mode 100644
+index 0000000..68f0953
+Binary files /dev/null and b/filet.text differ
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff orign/main...orign/feature
+fatal: ambiguous argument 'orign/main...orign/feature': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff origin/main...origin/feature
+diff --git a/filet.text b/filet.text
+new file mode 100644
+index 0000000..68f0953
+Binary files /dev/null and b/filet.text differ
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff --stat main...feature
+ filet.text | Bin 0 -> 32 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git merge feature
+Merge made by the 'ort' strategy.
+ filet.text | Bin 0 -> 32 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 filet.text
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git status
+On branch main
+Your branch is ahead of 'origin/main' by 2 commits.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log --oneline -5
+f1a4951 (HEAD -> main) Merge branch 'feature'
+442d297 (origin/main) Update git.md
+18d09b0 Update git.md
+dcfcea1 Update git.md
+0f4a6e9 Update git.md
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log origin/main..HEAD --oneline
+f1a4951 (HEAD -> main) Merge branch 'feature'
+c7d5dcb (origin/feature, feature) diff
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git push origin main
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 323 bytes | 323.00 KiB/s, done.
+Total 2 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/ahmedssp/JAVA
+   442d297..f1a4951  main -> main
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log -2 --oneline
+f1a4951 (HEAD -> main, origin/main) Merge branch 'feature'
+442d297 Update git.md
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff main...feature
 ```
+# Explanation example 2
 
-* `git show` displays **full details of the latest commit** (or the commit you specify).
-
-* It includes:
-
-  1. Commit hash
-  2. Author
-  3. Date
-  4. Commit message
-  5. **Changes introduced** (the diff)
-
-* In your case, a **new binary file `filet.text`** was added. Since Git treats it as binary, it doesn’t show textual changes.
+Sure! Let’s go **step by step** through what happened in your Git session. I’ll explain every command, the output you got, and the logic behind it. I’ll also clarify why some commands showed results and others didn’t.
 
 ---
 
-### **3. `git show --stat`**
+### **1. Checking the status**
 
-```bash
-git show --stat
-filet.text | Bin 0 -> 32 bytes
-1 file changed, 0 insertions(+), 0 deletions(-)
-```
-
-* `--stat` gives a **summary of changes** instead of full diffs.
-* It shows:
-
-  * `filet.text` was added as a binary file.
-  * Its size is **32 bytes**.
-  * No textual insertions or deletions because it’s binary.
-
----
-
-### **4. `git status`**
-
-```bash
+```powershell
 git status
+```
+
+Output:
+
+```
 On branch feature
 nothing to commit, working tree clean
 ```
 
-* Confirms your working directory is **clean**:
+✅ Meaning:
 
-  * No changes staged for commit
-  * No untracked files
-* You are currently on the `feature` branch.
+* You are on the branch `feature`.
+* All changes are committed; nothing is staged or unstaged.
 
 ---
 
-### **5. `git diff`**
+### **2. Checking remote branches**
 
-```bash
-git diff
+```powershell
+git branch -r
 ```
 
-* Shows **unstaged changes** between working directory and last commit.
-* You got no output → no changes in your working directory.
+Output:
 
----
-
-### **6. `git diff --staged`**
-
-```bash
-git diff --staged
+```
+origin/main
 ```
 
-* Shows changes **staged for commit** (index vs last commit).
-* You got no output → nothing staged because you already committed.
+* Only the `main` branch exists on the remote currently.
+* `feature` hasn’t been pushed yet.
 
 ---
 
-### **7. `git log main..HEAD --oneline`**
+### **3. Checking local branches**
 
-```bash
-git log main..HEAD --oneline
-c7d5dcb (HEAD -> feature) diff
+```powershell
+git branch
 ```
 
-* `main..HEAD` means: **show commits that are in `HEAD` but not in `main`**.
-* This shows **your feature branch has 1 commit ahead of main**.
+Output:
 
----
-
-### **8. `git show c7d5dcb`**
-
-```bash
-git show c7d5dcb
+```
+* feature
+  main
 ```
 
-* Shows the **details of commit `c7d5dcb`**, same as `git show` earlier.
+* You have two local branches: `feature` (current) and `main`.
 
 ---
 
-### **9. `git diff --stat main...feature`**
+### **4. Checking the latest commit**
 
-```bash
-git diff --stat main...feature
+```powershell
+git log -1
+```
+
+Output shows:
+
+* Latest commit on `feature` has hash `c7d5dcb`
+* Author: You
+* Commit message: `diff`
+* File added: `filet.text` (binary, 32 bytes)
+
+```powershell
+git show --stat
+```
+
+Output:
+
+```
 filet.text | Bin 0 -> 32 bytes
 1 file changed, 0 insertions(+), 0 deletions(-)
 ```
 
-* `main...feature` (triple dots) shows **changes between the tips of the two branches from their common ancestor**.
-* Confirms the `feature` branch **added 1 binary file** compared to `main`.
+✅ Meaning:
+
+* You created a new file `filet.text`.
+* Nothing else was changed.
 
 ---
 
-### **10. `git push -u origin feature`**
+### **5. Checking differences**
 
-```bash
+```powershell
+git diff
+git diff --staged
+```
+
+* Both commands returned nothing because there are no uncommitted changes or staged changes.
+
+```powershell
+git log main..HEAD --oneline
+```
+
+Output:
+
+```
+c7d5dcb (HEAD -> feature) diff
+```
+
+✅ Meaning:
+
+* Your `feature` branch is **ahead of `main` by 1 commit**.
+* `main` does not have the `filet.text` file yet.
+
+---
+
+### **6. Pushing `feature` to remote**
+
+```powershell
 git push -u origin feature
 ```
 
-* Pushes your `feature` branch to **remote `origin`**.
-* `-u` sets upstream tracking, so future `git push` / `git pull` can be used without specifying `origin feature`.
-* Output shows:
+Output shows:
 
-  * 3 objects were uploaded (your commit + file content)
-  * GitHub suggests creating a Pull Request (PR) to merge `feature` into `main`.
+* Remote branch `feature` created.
+* Branch is now tracking `origin/feature`.
 
----
-
-### **11. `git branch -r`**
-
-```bash
+```powershell
 git branch -r
-  origin/feature
-  origin/main
 ```
 
-* Lists **remote branches**.
-* Confirms your `feature` branch is now on the remote.
+Output:
+
+```
+origin/feature
+origin/main
+```
+
+* Both `main` and `feature` now exist remotely.
+
 ---
+
+### **7. Comparing branches**
+
+```powershell
+git diff main...feature
+```
+
+Output:
+
+```
+filet.text | Bin 0 -> 32 bytes
+```
+
+✅ Meaning:
+
+* Shows **all differences between `main` and `feature`**.
+* Since `main` doesn’t have `filet.text`, it shows as new.
+
+```powershell
+git diff origin/main...origin/feature
+```
+
+* Same idea, but comparing **remote branches** instead of local branches.
+
+---
+
+### **8. Switching to main and updating**
+
+```powershell
+git checkout main
+```
+
+Output:
+
+```
+Your branch is behind 'origin/main' by 8 commits, and can be fast-forwarded.
+```
+
+* `main` is behind `origin/main`.
+
+```powershell
+git pull
+```
+
+* Fetches updates from remote.
+* Your local `main` now matches `origin/main`.
+
+---
+
+### **9. Merging feature into main**
+
+```powershell
+git merge feature
+```
+
+Output:
+
+```
+Merge made by the 'ort' strategy.
+filet.text | Bin 0 -> 32 bytes
+```
+
+✅ Meaning:
+
+* `feature` changes (adding `filet.text`) merged into `main`.
+* No conflicts occurred.
+
+---
+
+### **10. Pushing main to remote**
+
+```powershell
+git push origin main
+```
+
+* Your merged `main` branch now exists on GitHub.
+
+---
+
+### **11. Checking commit history**
+
+```powershell
+git log --oneline -5
+```
+
+```
+f1a4951 Merge branch 'feature'
+442d297 (origin/main) Update git.md
+...
+```
+* Shows last commits on `main`.
+* Merge commit `f1a4951` brings `filet.text` from `feature`.
+---
+### **12. Key points on `git diff`**
+* `git diff` → differences between working directory and index.
+* `git diff --staged` → differences between index and HEAD.
+* `git diff main...feature` → differences between two branches (local).
+* `git diff origin/main...origin/feature` → differences between two remote branches.
+✅ Your `git diff` showed `filet.text` only because it exists in `feature` but not in `main`.
+---
+### **Summary of the workflow**
+1. You created `feature` branch and added `filet.text`.
+2. Committed it.
+3. Pushed `feature` to remote.
+4. Switched to `main` and updated it.
+5. Merged `feature` into `main`.
+6. Pushed `main` to remote.
+7. All changes are now synced.
+---
+
