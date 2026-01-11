@@ -23,7 +23,6 @@ HEAD = where you are now
 ---
 
 ## LEVEL 1: Absolute Basics
-
 ---
 
 ### 1. Initialize a Repository
@@ -2043,3 +2042,238 @@ git fetch origin feature → only one branch
 > “Git fetch only updates remote-tracking branches. `git fetch` and `git fetch origin` update all branches, while `git fetch origin feature` updates only the specified branch, without affecting my current working branch.”
 ---
 
+# Example 2:
+```
+ git log -1 --oneline
+c7d5dcb (HEAD -> feature) diff
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git show
+commit c7d5dcb5b9d05a07de77f57860b90f5a621aad0a (HEAD -> feature)
+Author: Ahmed Mostafa Abd-ellsalame <62264791+ahmedssp@users.noreply.github.com>
+Date:   Sat Jan 10 02:41:30 2026 +0200
+
+    diff
+
+diff --git a/filet.text b/filet.text
+new file mode 100644
+index 0000000..68f0953
+Binary files /dev/null and b/filet.text differ
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git show --stat
+commit c7d5dcb5b9d05a07de77f57860b90f5a621aad0a (HEAD -> feature)
+Author: Ahmed Mostafa Abd-ellsalame <62264791+ahmedssp@users.noreply.github.com>
+Date:   Sat Jan 10 02:41:30 2026 +0200
+
+    diff
+
+ filet.text | Bin 0 -> 32 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git status
+On branch feature
+nothing to commit, working tree clean
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff --staged
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git log main..HEAD --oneline
+c7d5dcb (HEAD -> feature) diff
+PS C:\Users\A-Abdelsalam\Desktop\New folder> ^C
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git show c7d5dcb
+commit c7d5dcb5b9d05a07de77f57860b90f5a621aad0a (HEAD -> feature)
+Author: Ahmed Mostafa Abd-ellsalame <62264791+ahmedssp@users.noreply.github.com>
+Date:   Sat Jan 10 02:41:30 2026 +0200
+
+    diff
+
+diff --git a/filet.text b/filet.text
+new file mode 100644
+index 0000000..68f0953
+Binary files /dev/null and b/filet.text differ
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git diff --stat main...feature
+ filet.text | Bin 0 -> 32 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git push -u origin feature
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 324 bytes | 324.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+remote:
+remote: Create a pull request for 'feature' on GitHub by visiting:
+remote:      https://github.com/ahmedssp/JAVA/pull/new/feature
+remote:
+To https://github.com/ahmedssp/JAVA
+ * [new branch]      feature -> feature
+branch 'feature' set up to track 'origin/feature'.
+PS C:\Users\A-Abdelsalam\Desktop\New folder> git branch -r
+  origin/feature
+  origin/main
+PS C:\Users\A-Abdelsalam\Desktop\New folder>
+```
+# Explanation example 2
+Sure! Let’s carefully break down each of the Git commands you ran and the output you got, step by step, so you can understand exactly what’s happening in your repository.
+
+---
+
+### **1. `git log -1 --oneline`**
+
+```bash
+git log -1 --oneline
+c7d5dcb (HEAD -> feature) diff
+```
+
+* `git log` shows commit history.
+* `-1` means **show only the latest commit**.
+* `--oneline` condenses each commit into a single line: **commit hash + commit message**.
+* Output:
+
+  * `c7d5dcb` → the short hash of your latest commit.
+  * `(HEAD -> feature)` → indicates **HEAD** (your current checked-out commit) is pointing to the `feature` branch.
+  * `diff` → the commit message.
+
+---
+
+### **2. `git show`**
+
+```bash
+git show
+commit c7d5dcb5b9d05a07de77f57860b90f5a621aad0a (HEAD -> feature)
+Author: Ahmed Mostafa Abd-ellsalame <62264791+ahmedssp@users.noreply.github.com>
+Date:   Sat Jan 10 02:41:30 2026 +0200
+
+    diff
+
+diff --git a/filet.text b/filet.text
+new file mode 100644
+index 0000000..68f0953
+Binary files /dev/null and b/filet.text differ
+```
+
+* `git show` displays **full details of the latest commit** (or the commit you specify).
+
+* It includes:
+
+  1. Commit hash
+  2. Author
+  3. Date
+  4. Commit message
+  5. **Changes introduced** (the diff)
+
+* In your case, a **new binary file `filet.text`** was added. Since Git treats it as binary, it doesn’t show textual changes.
+
+---
+
+### **3. `git show --stat`**
+
+```bash
+git show --stat
+filet.text | Bin 0 -> 32 bytes
+1 file changed, 0 insertions(+), 0 deletions(-)
+```
+
+* `--stat` gives a **summary of changes** instead of full diffs.
+* It shows:
+
+  * `filet.text` was added as a binary file.
+  * Its size is **32 bytes**.
+  * No textual insertions or deletions because it’s binary.
+
+---
+
+### **4. `git status`**
+
+```bash
+git status
+On branch feature
+nothing to commit, working tree clean
+```
+
+* Confirms your working directory is **clean**:
+
+  * No changes staged for commit
+  * No untracked files
+* You are currently on the `feature` branch.
+
+---
+
+### **5. `git diff`**
+
+```bash
+git diff
+```
+
+* Shows **unstaged changes** between working directory and last commit.
+* You got no output → no changes in your working directory.
+
+---
+
+### **6. `git diff --staged`**
+
+```bash
+git diff --staged
+```
+
+* Shows changes **staged for commit** (index vs last commit).
+* You got no output → nothing staged because you already committed.
+
+---
+
+### **7. `git log main..HEAD --oneline`**
+
+```bash
+git log main..HEAD --oneline
+c7d5dcb (HEAD -> feature) diff
+```
+
+* `main..HEAD` means: **show commits that are in `HEAD` but not in `main`**.
+* This shows **your feature branch has 1 commit ahead of main**.
+
+---
+
+### **8. `git show c7d5dcb`**
+
+```bash
+git show c7d5dcb
+```
+
+* Shows the **details of commit `c7d5dcb`**, same as `git show` earlier.
+
+---
+
+### **9. `git diff --stat main...feature`**
+
+```bash
+git diff --stat main...feature
+filet.text | Bin 0 -> 32 bytes
+1 file changed, 0 insertions(+), 0 deletions(-)
+```
+
+* `main...feature` (triple dots) shows **changes between the tips of the two branches from their common ancestor**.
+* Confirms the `feature` branch **added 1 binary file** compared to `main`.
+
+---
+
+### **10. `git push -u origin feature`**
+
+```bash
+git push -u origin feature
+```
+
+* Pushes your `feature` branch to **remote `origin`**.
+* `-u` sets upstream tracking, so future `git push` / `git pull` can be used without specifying `origin feature`.
+* Output shows:
+
+  * 3 objects were uploaded (your commit + file content)
+  * GitHub suggests creating a Pull Request (PR) to merge `feature` into `main`.
+
+---
+
+### **11. `git branch -r`**
+
+```bash
+git branch -r
+  origin/feature
+  origin/main
+```
+
+* Lists **remote branches**.
+* Confirms your `feature` branch is now on the remote.
+---
