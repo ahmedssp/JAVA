@@ -1950,4 +1950,96 @@ git revert HEAD
 ```
 👉 Creates a **new commit** that cancels the previous one.
 ---
+Perfect 👍
+Below is a **graph / diagram-style explanation** you can **draw on a whiteboard** to show the difference between:
+* `git fetch`
+* `git fetch origin`
+* `git fetch origin feature`
+This is **very interview-friendly**.
+---
+# 🧠 Whiteboard Graph: `git fetch` Differences
+---
+## 🔹 Before Fetch (Initial State)
+```
+LOCAL REPO                     REMOTE (origin)
+main        ●──●──●            main        ●──●──●──●
+feature-A  ●──●               feature-A  ●──●──●
+feature-B  ●                  feature-B  ●──●
+```
+👉 Local repo is **behind** remote.
+---
+## 1️⃣ `git fetch`
+### What it does (Graph)
+```
+LOCAL REPO                     REMOTE (origin)
+origin/main        ●──●──●──●
+origin/feature-A  ●──●──●
+origin/feature-B  ●──●
+(main, feature-A, feature-B unchanged)
+```
+✔ Fetches **ALL branches from ALL remotes**
+✔ Updates only **remote-tracking branches**
+❌ Does NOT move local branches
+---
+### Whiteboard Sentence:
+> “`git fetch` updates my remote-tracking branches only.”
+---
+## 2️⃣ `git fetch origin`
+### What it does (Graph)
+```
+LOCAL REPO                     REMOTE (origin)
+origin/main        ●──●──●──●
+origin/feature-A  ●──●──●
+origin/feature-B  ●──●
+(main, feature-A, feature-B unchanged)
+```
+📌 **Same graph as `git fetch`**
+Only difference → remote explicitly named.
+---
+### Whiteboard Sentence:
+> “`git fetch origin` fetches all branches from origin.”
+---
+## 3️⃣ `git fetch origin feature-A`
+
+### What it does (Graph)
+
+```
+LOCAL REPO                     REMOTE (origin)
+
+origin/feature-A  ●──●──●
+
+(main & feature-B NOT fetched)
+```
+✔ Fetches **ONLY one branch**
+✔ Faster and targeted
+❌ Other branches not updated
+---
+### Whiteboard Sentence:
+> “`git fetch origin feature-A` updates only that specific branch.”
+---
+## ❌ `git fetch feature-A` (Invalid Case)
+```
+ERROR:
+feature-A is not a remote
+```
+✖ Fails unless `feature-A` is a remote name.
+---
+## 🔁 Key Rule (Draw a Box)
+```
+FETCH = Download updates
+NO merge
+NO checkout
+NO code change
+```
+---
+## 🎯 Interview Memory Trick
+```
+git fetch        → everything
+git fetch origin → everything from origin
+git fetch origin feature → only one branch
+```
+---
+## 🧠 Final 15-Second Explanation (Say This)
+> “Git fetch only updates remote-tracking branches. `git fetch` and `git fetch origin` update all branches, while `git fetch origin feature` updates only the specified branch, without affecting my current working branch.”
+---
 
