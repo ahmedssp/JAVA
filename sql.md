@@ -1946,6 +1946,302 @@ WHERE s.Salary > dept_avg.DeptAvg;
 
 ---
 
+Got it 👍
+As a **Senior QC / QA Engineer**, what you’re asking for is a **structured classification of common problems and defects found in database testing**. This is very useful for **test planning, defect reporting, root cause analysis, and audits**.
+
+Below is a **professional, industry-standard categorization** of **database testing bugs**, with examples and what to verify.
+
+---
+
+# Database Testing – Common Problem & Bug Categories
+
+## 1. **Data Integrity & Consistency Issues**
+
+These are the **most critical** database defects.
+
+### Common Bugs
+
+* Orphan records (missing parent data)
+* Duplicate records where uniqueness is required
+* Incorrect foreign key relationships
+* Partial inserts/updates
+* Mismatched data across related tables
+
+### Example
+
+* Order exists without a valid Customer
+* User deleted but profile still exists
+
+### What to Test
+
+* Primary key / foreign key constraints
+* Cascade delete/update behavior
+* Referential integrity
+
+---
+
+## 2. **Constraint & Rule Violations**
+
+Bugs related to database rules not being enforced.
+
+### Common Bugs
+
+* NULL values allowed in NOT NULL columns
+* Invalid data inserted (out-of-range values)
+* Unique constraint not working
+* Check constraints ignored
+
+### Example
+
+* Age = -5 stored
+* Duplicate email addresses allowed
+
+### What to Test
+
+* NOT NULL
+* UNIQUE
+* CHECK
+* DEFAULT values
+
+---
+
+## 3. **Data Accuracy & Validation Issues**
+
+Data exists, but it’s **wrong**.
+
+### Common Bugs
+
+* Incorrect calculations
+* Rounding errors
+* Wrong date/time values
+* Incorrect status transitions
+
+### Example
+
+* Tax calculation mismatch
+* Date stored in wrong timezone
+
+### What to Test
+
+* Business rule validation
+* Derived/calculated columns
+* Stored procedure logic
+
+---
+
+## 4. **CRUD Operation Issues**
+
+Failures in basic database operations.
+
+### Common Bugs
+
+* Insert succeeds but update fails
+* Delete removes wrong records
+* Update affects more rows than expected
+* Missing rollback on failure
+
+### Example
+
+* Updating one user updates all users
+
+### What to Test
+
+* Insert / Select / Update / Delete
+* Transaction commit & rollback
+* Row count verification
+
+---
+
+## 5. **Cascade & Referential Action Issues**
+
+Very common in complex systems.
+
+### Common Bugs
+
+* Cascade delete not triggered
+* Unexpected cascade delete (data loss)
+* Update cascade not working
+* Circular cascade failure
+
+### Example
+
+* Parent deleted but children remain
+* Deleting user deletes unrelated data
+
+### What to Test
+
+* ON DELETE CASCADE / RESTRICT / SET NULL
+* ORM cascade configurations
+
+---
+
+## 6. **Stored Procedures, Functions & Triggers Issues**
+
+Logic-related database bugs.
+
+### Common Bugs
+
+* Procedure not handling edge cases
+* Trigger firing multiple times
+* Infinite trigger loops
+* Incorrect output parameters
+
+### Example
+
+* Audit trigger inserts duplicate logs
+
+### What to Test
+
+* Input/output validation
+* Error handling
+* Performance impact
+
+---
+
+## 7. **Transaction & Concurrency Issues**
+
+Critical for financial or high-traffic systems.
+
+### Common Bugs
+
+* Dirty reads
+* Lost updates
+* Deadlocks
+* Phantom reads
+
+### Example
+
+* Two users overwrite each other’s data
+
+### What to Test
+
+* Transaction isolation levels
+* Locking behavior
+* Multi-user scenarios
+
+---
+
+## 8. **Performance & Scalability Issues**
+
+Usually found in production-like data.
+
+### Common Bugs
+
+* Slow queries
+* Missing or unused indexes
+* Full table scans
+* Blocking queries
+
+### Example
+
+* Query works in QA but times out in prod
+
+### What to Test
+
+* Execution plans
+* Query response time
+* Index usage
+
+---
+
+## 9. **Security & Access Control Issues**
+
+Often overlooked but high risk.
+
+### Common Bugs
+
+* Unauthorized data access
+* SQL injection vulnerabilities
+* Over-privileged database users
+* Sensitive data not encrypted
+
+### Example
+
+* User can see another user’s data
+
+### What to Test
+
+* Role-based access
+* Encryption (at rest / in transit)
+* Input sanitization
+
+---
+
+## 10. **Data Migration & ETL Issues**
+
+Very common during releases.
+
+### Common Bugs
+
+* Data loss during migration
+* Incorrect field mapping
+* Truncated data
+* Duplicate records post-migration
+
+### Example
+
+* Phone numbers cut off after migration
+
+### What to Test
+
+* Source vs target reconciliation
+* Record counts
+* Data format validation
+
+---
+
+## 11. **Backup, Recovery & Reliability Issues**
+
+Disaster recovery–related defects.
+
+### Common Bugs
+
+* Backup failure
+* Restore does not work
+* Inconsistent restored data
+
+### What to Test
+
+* Backup schedules
+* Restore verification
+* Point-in-time recovery
+
+---
+
+## 12. **Environment & Configuration Issues**
+
+Non-functional but common.
+
+### Common Bugs
+
+* Wrong schema version
+* Missing tables or columns
+* Incorrect DB parameters
+
+### Example
+
+* QA and PROD schemas don’t match
+
+---
+
+# High-Level Bug Classification (for Defect Tracking)
+
+You can use this **defect type taxonomy** in JIRA / ALM:
+
+* Data Integrity Defect
+* Constraint Violation
+* Business Rule Defect
+* CRUD Defect
+* Cascade / Referential Defect
+* Stored Procedure / Trigger Defect
+* Transaction / Concurrency Defect
+* Performance Defect
+* Security Defect
+* Migration / ETL Defect
+* Backup / Recovery Defect
+* Configuration Defect
+
+---
 
 
 
