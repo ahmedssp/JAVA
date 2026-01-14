@@ -358,14 +358,74 @@ WHERE CustomerID NOT IN (
 
 28. **Q:** How do you check for invalid foreign key references?
     **A:**
+---
 
-    ```sql
-    SELECT * FROM Orders o
-    WHERE NOT EXISTS (
-        SELECT 1 FROM Employees e
-        WHERE e.EmployeeID = o.EmployeeID
-    );
-    ```
+## **Tables**
+
+### Employees
+
+| EmployeeID | Name    |
+| ---------- | ------- |
+| 1          | Alice   |
+| 2          | Bob     |
+| 3          | Charlie |
+
+### Orders
+
+| OrderID | EmployeeID | Amount |
+| ------- | ---------- | ------ |
+| 101     | 1          | 500    |
+| 102     | 3          | 250    |
+| 103     | 4          | 400    |
+| 104     | NULL       | 300    |
+
+> `Orders.EmployeeID` is a foreign key reference to `Employees.EmployeeID` (but let’s assume FK constraint is **not enforced**, so invalid data can exist).
+
+---
+
+## **Query**
+
+``` 
+SELECT * 
+FROM Orders o
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM Employees e
+    WHERE e.EmployeeID = o.EmployeeID
+);
+
+```
+## **Step 2: Final Output**
+
+| OrderID | EmployeeID | Amount |
+| ------- | ---------- | ------ |
+| 103     | 4          | 400    |
+| 104     | NULL       | 300    |
+
+✅ This is exactly what the query returns: all **orphan orders** (EmployeeID does not exist in Employees).
+
+
+
+## **Different Conditions**
+
+| Condition                | Example                | Output Explanation                                           |
+| ------------------------ | ---------------------- | ------------------------------------------------------------ |
+| All EmployeeIDs valid    | Orders: 101(1), 102(2) | Output: **empty** → no orphan records                        |
+| Some EmployeeIDs invalid | Orders: 101(1), 103(4) | Output: 103 → only invalid EmployeeID                        |
+| EmployeeID NULL          | Orders: 104(NULL)      | Output: 104 → NULL treated as invalid (no matching employee) |
+| Multiple invalid         | Orders: 103(4), 105(5) | Output: 103, 105 → all invalid EmployeeIDs                   |
+
+
+
+### ✅ Key Notes
+
+1. `NOT EXISTS` **handles NULL safely** → includes rows where `EmployeeID` is NULL.
+2. Only rows **without a matching parent** are returned.
+3. If `Orders.EmployeeID` had a **proper FK constraint**, this query would **always return 0 rows**.
+
+---
+
+ 
 
 29. **Q:** How can you enforce NOT NULL constraint for foreign keys?
     **A:** Define the column as `NOT NULL` when creating the table:
