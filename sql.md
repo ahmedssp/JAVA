@@ -740,9 +740,82 @@ SELECT * FROM Projects;
    ```sql
    SELECT DISTINCT Department FROM Employees;
    ```
-Sure! Let’s break it down.
+This is a basic SQL question. Let me explain clearly.
 
----
+
+
+## **Question:** How do you select distinct values in a column?
+
+### **Answer (expanded):**
+
+> You use the `DISTINCT` keyword in your `SELECT` statement to return **only unique values** in a column, removing duplicates.
+
+
+### **Syntax**
+
+```sql
+SELECT DISTINCT column_name
+FROM table_name;
+```
+
+* `DISTINCT` applies to the **entire row combination** if you select multiple columns.
+* If you select **one column**, it just removes duplicate values.
+
+### **Example 1: Single column**
+
+Suppose we have a table `Employees`:
+
+| EmployeeID | Department |
+| ---------- | ---------- |
+| 1          | HR         |
+| 2          | IT         |
+| 3          | HR         |
+| 4          | IT         |
+| 5          | Finance    |
+
+Query:
+
+```sql
+SELECT DISTINCT Department
+FROM Employees;
+```
+
+**Output:**
+
+| Department |
+| ---------- |
+| HR         |
+| IT         |
+| Finance    |
+
+✅ Only unique departments are returned.
+
+### **Example 2: Multiple columns**
+
+```sql
+SELECT DISTINCT Department, EmployeeID
+FROM Employees;
+```
+
+* Here, `DISTINCT` considers **both columns together**.
+* Rows must be **completely identical** to be removed.
+
+### **Key Points**
+
+1. `DISTINCT` removes **duplicate values**.
+2. Works on **one or more columns**.
+3. Can be combined with `ORDER BY`:
+
+```sql
+SELECT DISTINCT Department
+FROM Employees
+ORDER BY Department;
+```
+
+
+So the short answer is:
+
+> **Use `SELECT DISTINCT column_name FROM table_name;` to get only unique values in a column.**
 
 ### **SQL Statement:**
 
