@@ -209,14 +209,149 @@ Sure! Let me explain your SQL statement step by step.
 
 25. **Q:** How do you find orphan records violating foreign key relationships?
     **A:**
+  No problem 👍 I’ll explain it **very simply, step by step**, as if you are **junior / entry-level**.
 
-    ```sql
-    SELECT * FROM Orders o
-    LEFT JOIN Employees e ON o.EmployeeID = e.EmployeeID
-    WHERE e.EmployeeID IS NULL;
-    ```
+---
 
-26. **Q:** How do you check for duplicate values in a primary key column?
+## Step 1️⃣ Understand the problem (very important)
+
+You have **two tables**:
+
+### Parent table (main table)
+
+Example: `Customers`
+
+```sql
+CustomerID   (Primary Key)
+```
+
+### Child table (dependent table)
+
+Example: `Orders`
+
+```sql
+OrderID
+CustomerID   (Foreign Key)
+```
+
+👉 **Orphan record** means:
+
+* An order has a `CustomerID`
+* But this `CustomerID` **does NOT exist** in the `Customers` table
+
+---
+
+## Step 2️⃣ Know what we want to find
+
+We want to find:
+
+> Orders that refer to customers that are not in the Customers table
+
+---
+
+## Step 3️⃣ Use LEFT JOIN (easiest way for beginners)
+
+This is the **simplest and safest method**.
+
+```sql
+SELECT o.*
+FROM Orders o
+LEFT JOIN Customers c
+    ON o.CustomerID = c.CustomerID
+WHERE c.CustomerID IS NULL;
+```
+
+---
+
+## Step 4️⃣ Understand this query line by line
+
+### 🔹 `SELECT o.*`
+
+* Show all columns from `Orders`
+
+---
+
+### 🔹 `FROM Orders o`
+
+* `Orders` is the **child table**
+* `o` is just a short name (alias)
+
+---
+
+### 🔹 `LEFT JOIN Customers c`
+
+* Bring data from `Customers`
+* **LEFT JOIN keeps all Orders**, even if no customer exists
+
+---
+
+### 🔹 `ON o.CustomerID = c.CustomerID`
+
+* Match orders with customers using `CustomerID`
+
+---
+
+### 🔹 `WHERE c.CustomerID IS NULL`
+
+* If customer data is `NULL`
+* That means **no matching customer was found**
+* ✅ This order is an **orphan record**
+
+---
+
+## Step 5️⃣ Simple visual example
+
+### Customers table
+
+| CustomerID |
+| ---------- |
+| 1          |
+| 2          |
+
+### Orders table
+
+| OrderID | CustomerID |
+| ------- | ---------- |
+| 101     | 1          |
+| 102     | 3 ❌        |
+
+### Result of the query
+
+| OrderID | CustomerID |
+| ------- | ---------- |
+| 102     | 3          |
+
+👉 Order `102` is an orphan because **CustomerID = 3 does not exist**
+
+---
+
+## Step 6️⃣ Why this happens in real projects
+
+* Foreign key constraint **was not added**
+* Old data before constraint was created
+* Manual data insertion
+* Data migration issues
+
+---
+
+## Step 7️⃣ Junior-level interview answer 🧠
+
+> To find orphan records, I use a LEFT JOIN between the child table and the parent table and check where the parent key is NULL. This shows records that don’t have a matching parent record.
+
+---
+
+## Step 8️⃣ Bonus: Easy alternative (optional)
+
+```sql
+SELECT *
+FROM Orders
+WHERE CustomerID NOT IN (
+    SELECT CustomerID FROM Customers
+);
+```
+
+
+27. **Q:** How do you check for duplicate values in a primary key column?
     **A:**
 
     ```sql
@@ -226,7 +361,7 @@ Sure! Let me explain your SQL statement step by step.
     HAVING COUNT(*) > 1;
     ```
 
-27. **Q:** How do you check for invalid foreign key references?
+28. **Q:** How do you check for invalid foreign key references?
     **A:**
 
     ```sql
@@ -237,17 +372,17 @@ Sure! Let me explain your SQL statement step by step.
     );
     ```
 
-28. **Q:** How can you enforce NOT NULL constraint for foreign keys?
+29. **Q:** How can you enforce NOT NULL constraint for foreign keys?
     **A:** Define the column as `NOT NULL` when creating the table:
 
     ```sql
     EmployeeID INT NOT NULL REFERENCES Employees(EmployeeID)
     ```
 
-29. **Q:** Can a table have a foreign key pointing to itself?
+30. **Q:** Can a table have a foreign key pointing to itself?
     **A:** Yes, it’s called a self-referencing foreign key (useful for hierarchical data).
 
-30. **Q:** How do you verify a self-referencing foreign key?
+31. **Q:** How do you verify a self-referencing foreign key?
     **A:** Use:
 
     ```sql
