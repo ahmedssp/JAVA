@@ -564,11 +564,120 @@ WHERE NOT EXISTS (
 
 48. **Q:** How can you test cascading updates for multiple foreign keys?
     **A:** Create multiple foreign key relationships with `ON UPDATE CASCADE` and update the parent table.
+    Exactly! Let’s explain this with a **simple, concrete example** so it’s easy to visualize.
 
-49. **Q:** How do you test if foreign key constraints prevent deletion when `ON DELETE RESTRICT` is used?
+
+
+## **Question:** How can you test cascading updates for multiple foreign keys?
+
+### **Answer (expanded):**
+
+> You create multiple foreign key relationships using `ON UPDATE CASCADE`, then update the parent table’s primary key and observe that all related child table foreign keys are automatically updated.
+
+
+
+## **Step-by-step Example**
+
+### **1. Create tables**
+
+```sql
+-- Parent table
+CREATE TABLE Departments (
+    DeptID INT PRIMARY KEY,
+    DeptName VARCHAR(50)
+);
+
+-- Child table 1
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    EmployeeName VARCHAR(50),
+    DeptID INT,
+    FOREIGN KEY (DeptID) REFERENCES Departments(DeptID)
+        ON UPDATE CASCADE
+);
+
+-- Child table 2
+CREATE TABLE Projects (
+    ProjectID INT PRIMARY KEY,
+    ProjectName VARCHAR(50),
+    DeptID INT,
+    FOREIGN KEY (DeptID) REFERENCES Departments(DeptID)
+        ON UPDATE CASCADE
+);
+```
+
+> ✅ Both `Employees.DeptID` and `Projects.DeptID` reference `Departments.DeptID` with **ON UPDATE CASCADE**.
+
+
+
+### **2. Insert sample data**
+
+```sql
+INSERT INTO Departments (DeptID, DeptName) VALUES (1, 'HR'), (2, 'IT');
+
+INSERT INTO Employees (EmployeeID, EmployeeName, DeptID)
+VALUES (101, 'Alice', 1), (102, 'Bob', 2);
+
+INSERT INTO Projects (ProjectID, ProjectName, DeptID)
+VALUES (201, 'Recruitment', 1), (202, 'Website', 2);
+```
+
+---
+
+### **3. Update parent table (DeptID)**
+
+```sql
+UPDATE Departments
+SET DeptID = 10
+WHERE DeptID = 1;
+```
+
+* **What happens:**
+
+  * `Departments.DeptID` = 1 → updated to 10
+  * All child rows in `Employees` and `Projects` with `DeptID = 1` automatically update to `10`
+  * **No manual update needed in child tables**
+
+---
+
+### **4. Verify cascading update**
+
+```sql
+SELECT * FROM Employees;
+SELECT * FROM Projects;
+```
+
+**Expected Output:**
+
+**Employees**
+
+| EmployeeID | EmployeeName | DeptID |
+| ---------- | ------------ | ------ |
+| 101        | Alice        | 10     |
+| 102        | Bob          | 2      |
+
+**Projects**
+
+| ProjectID | ProjectName | DeptID |
+| --------- | ----------- | ------ |
+| 201       | Recruitment | 10     |
+| 202       | Website     | 2      |
+
+✅ Both child tables updated automatically.
+
+### **Key Notes**
+
+1. `ON UPDATE CASCADE` ensures **referential integrity** when primary keys change.
+2. Useful when **primary keys are not immutable** (rare, but sometimes needed).
+3. Works for **multiple child tables referencing the same parent**.
+4. If you **don’t use CASCADE**, the update would fail with a **foreign key violation**.
+
+
+
+50. **Q:** How do you test if foreign key constraints prevent deletion when `ON DELETE RESTRICT` is used?
     **A:** Attempt to delete a parent row; it should fail if child rows exist.
 
-50. **Q:** How can you generate a report of all primary and foreign key constraints in the database?
+51. **Q:** How can you generate a report of all primary and foreign key constraints in the database?
     **A:**
 
     ```sql
