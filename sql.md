@@ -236,7 +236,7 @@ CustomerID   (Foreign Key)
 * An order has a `CustomerID`
 * But this `CustomerID` **does NOT exist** in the `Customers` table
 
----
+
 
 ## Step 2️⃣ Know what we want to find
 
@@ -244,7 +244,7 @@ We want to find:
 
 > Orders that refer to customers that are not in the Customers table
 
----
+
 
 ## Step 3️⃣ Use LEFT JOIN (easiest way for beginners)
 
@@ -258,7 +258,7 @@ LEFT JOIN Customers c
 WHERE c.CustomerID IS NULL;
 ```
 
----
+
 
 ## Step 4️⃣ Understand this query line by line
 
@@ -266,27 +266,27 @@ WHERE c.CustomerID IS NULL;
 
 * Show all columns from `Orders`
 
----
+
 
 ### 🔹 `FROM Orders o`
 
 * `Orders` is the **child table**
 * `o` is just a short name (alias)
 
----
+
 
 ### 🔹 `LEFT JOIN Customers c`
 
 * Bring data from `Customers`
 * **LEFT JOIN keeps all Orders**, even if no customer exists
 
----
+
 
 ### 🔹 `ON o.CustomerID = c.CustomerID`
 
 * Match orders with customers using `CustomerID`
 
----
+
 
 ### 🔹 `WHERE c.CustomerID IS NULL`
 
@@ -294,7 +294,7 @@ WHERE c.CustomerID IS NULL;
 * That means **no matching customer was found**
 * ✅ This order is an **orphan record**
 
----
+
 
 ## Step 5️⃣ Simple visual example
 
@@ -320,7 +320,6 @@ WHERE c.CustomerID IS NULL;
 
 👉 Order `102` is an orphan because **CustomerID = 3 does not exist**
 
----
 
 ## Step 6️⃣ Why this happens in real projects
 
@@ -329,13 +328,12 @@ WHERE c.CustomerID IS NULL;
 * Manual data insertion
 * Data migration issues
 
----
 
 ## Step 7️⃣ Junior-level interview answer 🧠
 
 > To find orphan records, I use a LEFT JOIN between the child table and the parent table and check where the parent key is NULL. This shows records that don’t have a matching parent record.
 
----
+
 
 ## Step 8️⃣ Bonus: Easy alternative (optional)
 
@@ -346,7 +344,7 @@ WHERE CustomerID NOT IN (
     SELECT CustomerID FROM Customers
 );
 ```
-
+---
 
 27. **Q:** How do you check for duplicate values in a primary key column?
     **A:**
