@@ -337,19 +337,18 @@ WHERE c.CustomerID IS NULL;
 
 ## Step 8️⃣ Bonus: Easy alternative (optional)
 
-```sql
+```
 SELECT *
 FROM Orders
 WHERE CustomerID NOT IN (
     SELECT CustomerID FROM Customers
 );
 ```
----
 
 27. **Q:** How do you check for duplicate values in a primary key column?
     **A:**
 
-    ```sql
+    ```
     SELECT EmployeeID, COUNT(*) 
     FROM Employees
     GROUP BY EmployeeID
@@ -381,7 +380,6 @@ WHERE CustomerID NOT IN (
 
 > `Orders.EmployeeID` is a foreign key reference to `Employees.EmployeeID` (but let’s assume FK constraint is **not enforced**, so invalid data can exist).
 
----
 
 ## **Query**
 
@@ -393,8 +391,8 @@ WHERE NOT EXISTS (
     FROM Employees e
     WHERE e.EmployeeID = o.EmployeeID
 );
-
 ```
+
 ## **Step 2: Final Output**
 
 | OrderID | EmployeeID | Amount |
@@ -405,7 +403,6 @@ WHERE NOT EXISTS (
 ✅ This is exactly what the query returns: all **orphan orders** (EmployeeID does not exist in Employees).
 
 
-
 ## **Different Conditions**
 
 | Condition                | Example                | Output Explanation                                           |
@@ -414,7 +411,6 @@ WHERE NOT EXISTS (
 | Some EmployeeIDs invalid | Orders: 101(1), 103(4) | Output: 103 → only invalid EmployeeID                        |
 | EmployeeID NULL          | Orders: 104(NULL)      | Output: 104 → NULL treated as invalid (no matching employee) |
 | Multiple invalid         | Orders: 103(4), 105(5) | Output: 103, 105 → all invalid EmployeeIDs                   |
-
 
 
 ### ✅ Key Notes
