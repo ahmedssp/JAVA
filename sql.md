@@ -209,9 +209,6 @@ Sure! Let me explain your SQL statement step by step.
 
 25. **Q:** How do you find orphan records violating foreign key relationships?
     **A:**
-  No problem 👍 I’ll explain it **very simply, step by step**, as if you are **junior / entry-level**.
-
----
 
 ## Step 1️⃣ Understand the problem (very important)
 
